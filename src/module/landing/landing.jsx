@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ProfileCard from "@/component/ProfileCard";
+import ProfileCard from "@/components/ProfileCard";
 
 const Landing = () => {
   return (

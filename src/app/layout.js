@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Menu from "@/component/menu";
+import Menu from "@/components/menu";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,34 +21,35 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" style={{ backgroundImage: 'url(/assets/image/header.png)' }}>
-        <Menu/>
-        
-        <div className="">
-          <div className="w-full flex items-center justify-between">
-            <a className="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-              <img src="assets/image/logo.png" height={70} width={70}/>
-              <span className="bg-clip-text mx-4 text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Emdad's English Aid</span>
-            </a>
-
-            <div className="flex w-1/2 justify-end content-center">
-              <a
-                className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
-                href="https://www.facebook.com/DreamersEnglishSuggestion?mibextid=ZbWKwL"
-              >
-                <svg className="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                  <path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
-                </svg>
-              </a>
-            </div>
-            
+      <body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" style={{ backgroundImage: 'url(/assets/image/header.png)' }}>
+      {/*<body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" >*/}
+      <div className="flex w-full relative">
+          <Menu/>
+          <div className="relative w-full pt-2 ">
+              <div className="sticky top-0 w-full flex items-center justify-between mx-4">
+                  <div>
+                      <span
+                          className="bg-clip-text font-bold mx-4 text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Emdad's English Aid</span>
+                  </div>
+                  <div className="flex w-1/2 justify-end content-center">
+                      <a
+                          className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
+                          href="https://www.facebook.com/DreamersEnglishSuggestion?mibextid=ZbWKwL"
+                      >
+                          <svg className="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                              <path
+                                  d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
+                          </svg>
+                      </a>
+                  </div>
+              </div>
+              <div className="w-full px-6 py-4">
+                  {children}
+              </div>
           </div>
-          {children}
-        </div>
-        
-        
+
+      </div>
       </body>
     </html>
-
   );
 }
