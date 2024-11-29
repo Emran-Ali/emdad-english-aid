@@ -4,7 +4,7 @@ export default defineConfig({
     dialect: "postgresql",
     schema:"./src/db/schema/schema.js",
     out: "./src/db/migration",
-    driver:"pglite",
+    driver:"pg",
     dbCredentials: {
         connectionString: process.env.DATABASE_URL,
     },

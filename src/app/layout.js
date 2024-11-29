@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" style={{ backgroundImage: 'url(/assets/image/header.png)' }}>
+      <body className="leading-normal tracking-normal s bg-cover bg-fixed min-h-screen" style={{ backgroundImage: 'url(/assets/image/header.png)' }}>
       {/*<body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" >*/}
       <div className="flex w-full relative">
           <Menu/>
