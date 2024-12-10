@@ -1,8 +1,8 @@
-'use client'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import {db} from "@/lib/db";
+import { createBatch } from "@/service/BatchService";
+
 
 // Define schema with Yup validation
 const schema = yup.object({
@@ -23,116 +23,98 @@ export default function CreateBatch() {
         resolver: yupResolver(schema),
     })
 
-    // Form submission handler
     const onSubmit = async (data) => {
-        try {
-            // Insert data into the BatchTable using Drizzle ORM
-            const newBatch = await db.insert(BatchTable).values({
-                name: data.name,
-                students: data.students,
-                year: data.year,
-                batch_time: data.batch_time || null, // Null if not provided
-                batch_days_id: data.batch_days_id || null, // Null if not provided
-                type: data.type,
-                status: true, // Set to true or as needed
-            });
-
-            console.log("New batch created:", newBatch);
-            alert("Batch successfully created!");
-        } catch (error) {
-            console.error("Error creating batch:", error);
-            alert("Error creating batch.");
-        }
+        const res = await createBatch(data);
     };
 
     return (
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="grid grid-cols-3 gap-4">
-                    <div>
-                        <label htmlFor="type" className="block text-sm font-medium">Type</label>
-                        <select
-                            {...register("type")}
-                            id="type"
-                            className="mt-1 p-2 border rounded w-full"
-                        >
-                            <option value="">Select Type</option>
-                            <option value="academic_1st_year">Academic 1st Year</option>
-                            <option value="academic_2nd_year">Academic 2nd Year</option>
-                            <option value="admissions">Admissions</option>
-                            <option value="re_admission">Re Admission</option>
-                        </select>
-                        {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
-                    </div>
-                    {/* Name field */}
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium">Name</label>
-                        <input
-                            {...register("name")}
-                            type="text"
-                            id="name"
-                            className="mt-1 p-2 border rounded w-full"
-                        />
-                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-                    </div>
-
-                    {/* Students field */}
-                    <div>
-                        <label htmlFor="students" className="block text-sm font-medium">Number of Students</label>
-                        <input
-                            {...register("students")}
-                            type="number"
-                            id="students"
-                            className="mt-1 p-2 border rounded w-full"
-                        />
-                        {errors.students && <p className="text-red-500 text-sm">{errors.students.message}</p>}
-                    </div>
-
-                    {/* Year field */}
-                    <div>
-                        <label htmlFor="year" className="block text-sm font-medium">Year</label>
-                        <input
-                            {...register("year")}
-                            type="number"
-                            id="year"
-                            className="mt-1 p-2 border rounded w-full"
-                        />
-                        {errors.year && <p className="text-red-500 text-sm">{errors.year.message}</p>}
-                    </div>
-
-                    {/* Batch Time field */}
-                    <div>
-                        <label htmlFor="batch_time" className="block text-sm font-medium">Batch Time</label>
-                        <input
-                            {...register("batch_time")}
-                            type="time"
-                            id="batch_time"
-                            className="mt-1 p-2 border rounded w-full"
-                        />
-                        {errors.batch_time && <p className="text-red-500 text-sm">{errors.batch_time.message}</p>}
-                    </div>
-
-                    {/* Batch Days ID field */}
-                    <div>
-                        <label htmlFor="batch_days_id" className="block text-sm font-medium">Batch Days ID</label>
-                        <input
-                            {...register("batch_days_id")}
-                            type="number"
-                            id="batch_days_id"
-                            className="mt-1 p-2 border rounded w-full"
-                        />
-                        {errors.batch_days_id && <p className="text-red-500 text-sm">{errors.batch_days_id.message}</p>}
-                    </div>
-
-                    {/* Type field */}
-
-                    {/* Submit Button */}
-                    <div>
-                        <button type="submit"
-                                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                            Submit
-                        </button>
-                    </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-3 gap-4">
+                <div>
+                    <label htmlFor="type" className="block text-sm font-medium">Type</label>
+                    <select
+                        {...register("type")}
+                        id="type"
+                        className="mt-1 p-2 border rounded w-full"
+                    >
+                        <option value="">Select Type</option>
+                        <option value="academic_1st_year">Academic 1st Year</option>
+                        <option value="academic_2nd_year">Academic 2nd Year</option>
+                        <option value="admissions">Admissions</option>
+                        <option value="re_admission">Re Admission</option>
+                    </select>
+                    {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
                 </div>
-            </form>
+                {/* Name field */}
+                <div>
+                    <label htmlFor="name" className="block text-sm font-medium">Name</label>
+                    <input
+                        {...register("name")}
+                        type="text"
+                        id="name"
+                        className="mt-1 p-2 border rounded w-full"
+                    />
+                    {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                </div>
+
+                {/* Students field */}
+                <div>
+                    <label htmlFor="students" className="block text-sm font-medium">Number of Students</label>
+                    <input
+                        {...register("students")}
+                        type="number"
+                        id="students"
+                        className="mt-1 p-2 border rounded w-full"
+                    />
+                    {errors.students && <p className="text-red-500 text-sm">{errors.students.message}</p>}
+                </div>
+
+                {/* Year field */}
+                <div>
+                    <label htmlFor="year" className="block text-sm font-medium">Year</label>
+                    <input
+                        {...register("year")}
+                        type="number"
+                        id="year"
+                        className="mt-1 p-2 border rounded w-full"
+                    />
+                    {errors.year && <p className="text-red-500 text-sm">{errors.year.message}</p>}
+                </div>
+
+                {/* Batch Time field */}
+                <div>
+                    <label htmlFor="batch_time" className="block text-sm font-medium">Batch Time</label>
+                    <input
+                        {...register("batch_time")}
+                        type="time"
+                        id="batch_time"
+                        className="mt-1 p-2 border rounded w-full"
+                    />
+                    {errors.batch_time && <p className="text-red-500 text-sm">{errors.batch_time.message}</p>}
+                </div>
+
+                {/* Batch Days ID field */}
+                <div>
+                    <label htmlFor="batch_days_id" className="block text-sm font-medium">Batch Days ID</label>
+                    <input
+                        {...register("batch_days_id")}
+                        type="number"
+                        id="batch_days_id"
+                        className="mt-1 p-2 border rounded w-full"
+                    />
+                    {errors.batch_days_id && <p className="text-red-500 text-sm">{errors.batch_days_id.message}</p>}
+                </div>
+
+                {/* Type field */}
+
+                {/* Submit Button */}
+                <div>
+                    <button type="submit"
+                        className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
     )
 }

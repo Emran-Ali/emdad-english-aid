@@ -25,8 +25,8 @@ export default function RootLayout({ children }) {
       {/*<body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" >*/}
       <div className="flex w-full relative">
           <Menu/>
-          <div className="relative w-full pt-2 ">
-              <div className="sticky top-0 w-full flex items-center justify-between mx-4">
+          <div className="relative w-full">
+              <div className="sticky top-0 flex items-center justify-between mx-4">
                   <div>
                       <span
                           className="bg-clip-text font-bold mx-4 text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Emdad's English Aid</span>
