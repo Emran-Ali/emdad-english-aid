@@ -3,8 +3,7 @@ import { BatchTable } from '@/db/schema/schema';
 
 export const POST = async (req) => {
     try {
-        const body = await req.json(); // Parse JSON from the request body
-
+        const body = await req.json();
         const newBatch = await db.insert(BatchTable).values({
             name: body.name,
             students: body.students,

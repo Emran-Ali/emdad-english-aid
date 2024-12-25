@@ -1,4 +1,3 @@
-import { varbinary } from "drizzle-orm/mysql-core";
 import {boolean, integer, pgTable, serial, time, varchar, timestamp} from "drizzle-orm/pg-core"
 
 export const users = pgTable('users', {
@@ -26,7 +25,7 @@ export const userRoles = pgTable('user_roles', {
 export const userSessions = pgTable('user_sessions', {
   id: serial('id').primaryKey(),
   userId: varchar('user_id'),
-  refreshToken: varbinary('refresh_token', { length: 255 }).unique(),
+  refreshToken: varchar('refresh_token', { length: 255 }).unique(),
   userAgent: varchar('user_agent', { length: 255 }),
   ipAddress: varchar('ip_address', { length: 255 }),
   isRevoked: boolean('is_revoked').default(false),
