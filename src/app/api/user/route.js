@@ -7,12 +7,13 @@ export const POST = async (req) => {
     try {
         const body = await req.json(); // Parse JSON from the request body
         const password = await hashPassword(body.password);
-        console.log(password, 'body');
+        console.log(password, password);
+        console.log(body.password)
         const newUser = await db.insert(users).values({
             name: body.name,
             email: body.email,
             contactNumber: body.contactNumber,
-            password: hashPassword(body.password),
+            password: password,
             profilePhoto: body.profilePhoto,
             role: body.role ,
             address: body.address,

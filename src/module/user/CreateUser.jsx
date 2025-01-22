@@ -67,7 +67,7 @@ export default function CreateUser() {
                     {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                 </div>
 
-            <div>
+                <div>
                 <label className="block text-gray-700">Contact Number</label>
                 <input
                     type="text"
@@ -78,10 +78,10 @@ export default function CreateUser() {
                 {errors.contactNumber && (
                     <p className="text-red-500 text-sm">{errors.contactNumber.message}</p>
                 )}
-            </div>
+                </div>
 
             {/* Password */}
-            <div>
+                <div>
                 <label className="block text-gray-700">Password</label>
                 <input
                     type="password"
@@ -90,10 +90,10 @@ export default function CreateUser() {
                     className="mt-1 p-2 border rounded w-full"
                 />
                 {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-            </div>
+                </div>
 
             {/* Role */}
-            <div>
+                <div>
                 <label className="block text-gray-700">Role</label>
                 <select
                     {...register('role')}
@@ -105,10 +105,10 @@ export default function CreateUser() {
                     <option value="viewer">Viewer</option>
                 </select>
                 {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
-            </div>
+                </div>
 
             {/* Address */}
-            <div>
+                <div>
                 <label className="block text-gray-700">Address</label>
                 <textarea
                     {...register('address')}
@@ -116,15 +116,16 @@ export default function CreateUser() {
                     className="mt-1 p-2 border rounded w-full"
                 />
                 {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
-            </div>
+                </div>
 
 
-                <div className="col-span-12">
+                <div className="col-span-3">
                     <button type="submit"
                             className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                         Submit
                     </button>
                 </div>
+
             </div>
         </form>
     )
