@@ -1,10 +1,10 @@
 import 'dotenv/config'
 import {NextResponse} from 'next/server';
-import {generateAccessToken, generateRefreshToken} from "@/lib/utile/token";
-import {db} from "@/lib/db";
+import {generateAccessToken, generateRefreshToken} from "@util/token";
+import { db } from '@emran/lib/db';
 import {eq} from "drizzle-orm";
 import {users, userSessions} from "@/db/schema/schema";
-import {comparePassword} from "@/lib/utile/passwordManage";
+import {comparePassword} from "@util/passwordManage";
 
 
 export async function POST(req) {

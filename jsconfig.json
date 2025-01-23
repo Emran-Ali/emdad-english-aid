@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@emran/*": ["./src/@emran/*"],
+      "@constants/*": ["./src/@emran/Constants/*"],
+      "@util/*": ["./src/@emran/lib/utile/*"],
+      "@service/*": ["./src/@emran/service/*"]
     }
   }
 }

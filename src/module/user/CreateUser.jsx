@@ -1,13 +1,9 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { createBatch } from "@/service/BatchService";
 import * as Yup from "yup";
 import React from "react";
-import {createUser} from "@/service/UserService";
+import {createUser} from "@service/UserService";
 
-
-// Define schema with Yup validation
 const schema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),

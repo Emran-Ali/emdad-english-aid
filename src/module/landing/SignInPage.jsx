@@ -2,7 +2,7 @@
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {login} from "@/service/loginService";
+import {login} from "@service/loginService";
 
 
 const schema = yup.object({

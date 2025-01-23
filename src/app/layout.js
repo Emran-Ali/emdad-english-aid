@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Menu from "@/components/menu";
+import {ApiProvider} from "@/@emran/Context/APIContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="leading-normal tracking-normal s bg-cover bg-fixed min-h-screen" style={{ backgroundImage: 'url(/assets/image/header.png)' }}>
       {/*<body className="leading-normal tracking-normal text-indigo-400 s bg-cover bg-fixed min-h-screen" >*/}
+      <ApiProvider>
       <div className="flex w-full relative">
           <Menu/>
           <div className="relative w-full">
@@ -49,6 +51,7 @@ export default function RootLayout({ children }) {
           </div>
 
       </div>
+          </ApiProvider>
       </body>
     </html>
   );

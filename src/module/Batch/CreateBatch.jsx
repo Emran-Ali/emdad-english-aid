@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { createBatch } from "@/service/BatchService";
+import {useBatchService} from "@service/BatchService";
 
 
 // Define schema with Yup validation
@@ -22,9 +22,11 @@ export default function CreateBatch() {
     } = useForm({
         resolver: yupResolver(schema),
     })
+    const  {loading, error, createBatch} = useBatchService();
 
     const onSubmit = async (data) => {
-        const res = await createBatch(data);
+        const res = await createBatch('api/batch',data);
+        console.log('submit', error, 'res', res);
     };
 
     return (

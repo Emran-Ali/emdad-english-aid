@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { db } from '@emran/lib/db';
 import { BatchTable } from '@/db/schema/schema';
 
 export const POST = async (req) => {

@@ -1,6 +1,6 @@
-import { db } from '@/lib/db';
+import { db } from '@/@emran/lib/db';
 import { users} from '@/db/schema/schema';
-import {hashPassword} from '@/lib/utile/passwordManage'
+import {hashPassword} from '@/@emran/lib/utile/passwordManage'
 
 export const POST = async (req) => {
     

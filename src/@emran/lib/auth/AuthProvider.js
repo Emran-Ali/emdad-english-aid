@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import jwtAxios, {setAuthToken} from './index';
+import jwtAxios, {setAuthToken} from '../axios/index';
 
 const JWTAuthContext = createContext({
     user: null,

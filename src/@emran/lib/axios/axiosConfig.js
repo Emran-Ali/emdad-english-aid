@@ -1,7 +1,5 @@
-import appRoutes from '@softbd/constants/appRouteConstants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {cookies} from "next/headers";
 
 const apiConfig = axios.create({
     headers: {
@@ -12,7 +10,7 @@ const apiConfig = axios.create({
 
 apiConfig.interceptors.request.use(
     (config) => {
-        const token = cookies.get('authToken');
+        const token = Cookies.get('authToken');
         const refreshToken = Cookies.get('refreshToken');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
@@ -25,7 +23,6 @@ apiConfig.interceptors.request.use(
     },
 );
 
-// Response interceptor for API calls
 apiConfig.interceptors.response.use(
     (response) => {
         return response;
@@ -33,7 +30,7 @@ apiConfig.interceptors.response.use(
     async function (error) {
         if (error?.response?.status === 401 && typeof window !== 'undefined') {
             localStorage.removeItem('token');
-            window.location.href = appRoutes.signin.path;
+            window.location.href = '/signin';
         }
         return Promise.reject(error);
     },
