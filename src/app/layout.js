@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Menu from "@/components/menu";
-import {ApiProvider} from "@/@emran/Context/APIContext";
+import {ApiProvider} from "@emran/Context/APIContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

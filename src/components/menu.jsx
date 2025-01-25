@@ -1,5 +1,4 @@
 'use client'
-import { HomeOutline, PersonOutline, ChatbubbleOutline, CameraOutline, SettingsOutline } from "react-ionicons";
 import { useState } from "react";
 import Link from "next/link";
 
