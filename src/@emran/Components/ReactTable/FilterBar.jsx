@@ -40,8 +40,6 @@ const FilterBar = ({
 
     return (
         <div className="bg-white shadow rounded-lg p-4">
-            <div className="flex justify-between items-start">
-                <h1 className="text-xl font-semibold">{topBarTitle}</h1>
                 {filterConfig.length > 0 && (
                     <button
                         className="flex items-center gap-2 text-gray-700 hover:text-black"
@@ -51,17 +49,14 @@ const FilterBar = ({
                         <span className="text-sm">Filter</span>
                     </button>
                 )}
-            </div>
-
             {filterConfig.length > 0 && (
-
                 <div className={`mt-4 border-t border-gray-300 pt-4 ${open ? 'block' : 'hidden'}`}>
-                <FilterField
+                    <FilterField
                             filters={filterConfig}
                             setFilters={setColumnFilters}
                             onFilterChange={handleFilterChange}
-                        />
-                    </div>
+                    />
+                </div>
             )}
         </div>
     );

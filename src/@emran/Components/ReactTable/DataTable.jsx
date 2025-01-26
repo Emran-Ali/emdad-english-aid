@@ -2,8 +2,8 @@
 import  { useEffect , useState} from 'react';
 import { useReactTable, flexRender } from '@tanstack/react-table';
 import {
-    ArrowUpOutline,
-    ArrowDownOutline,
+    IoArrowUpOutline,
+    IoArrowDownOutline,
 } from 'react-icons/io5';
 import SearchComponent from './SearchComponent';
 import {getTableOptions} from "./tableHelper";
@@ -199,13 +199,13 @@ const DataTable = ({
 
     // Table header component
     const TableHeader = () => (
-        <thead className="bg-gray-50">
+        <thead className="bg-cyan-600 text-white">
         {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
                     <th
                         key={header.id}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                        className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider cursor-pointer"
                         onClick={header.column.getToggleSortingHandler()}
                     >
                         <div className="flex items-center">
@@ -213,9 +213,9 @@ const DataTable = ({
                             {header.column.getIsSorted() && (
                                 <span className="ml-2">
                     {header.column.getIsSorted() === "asc" ? (
-                        <ArrowUpOutline className="h-4 w-4" />
+                        <IoArrowUpOutline className="h-4 w-4" />
                     ) : (
-                        <ArrowDownOutline className="h-4 w-4" />
+                        <IoArrowDownOutline className="h-4 w-4" />
                     )}
                   </span>
                             )}
@@ -257,7 +257,7 @@ const DataTable = ({
                   setPageSize(Number(e.target.value));
                   setPageIndex(0);
               }}
-              className="mx-2 border-gray-300 rounded-md"
+              className="mx-2 p-2 border-cyan-600 rounded-md"
           >
             {[5, 10, 20].map(size => (
                 <option key={size} value={size}>
@@ -290,11 +290,9 @@ const DataTable = ({
             </div>
         </div>
     );
-    console.log("hello bro");
+
     return (
         <div className="flex flex-col">
-
-
             <div className="mt-4 bg-white rounded-lg shadow">
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
@@ -302,22 +300,22 @@ const DataTable = ({
                             <SearchComponent setGlobalFilter={setGlobalFilter} />
                         )}
                         {showTopBar && (
-                            <FilterBar
-                                tableInstance={table}
-                                setGlobalFilter={setGlobalFilter}
-                                resetColumnFilters={() => setColumnFilters([])}
-                                setColumnFilters={setColumnFilters}
-                                columnFilters={columnFilters}
-                                onRefreshCallback={onClickRefresh}
-                                filterConfig={filterConfig}
-                                onFetchData={fetchData}
-                                topBarTitle={topBarTitle}
-                            />
+                          <></>
+                            // <FilterBar
+                            //     tableInstance={table}
+                            //     setGlobalFilter={setGlobalFilter}
+                            //     resetColumnFilters={() => setColumnFilters([])}
+                            //     setColumnFilters={setColumnFilters}
+                            //     columnFilters={columnFilters}
+                            //     onRefreshCallback={onClickRefresh}
+                            //     filterConfig={filterConfig}
+                            //     onFetchData={fetchData}
+                            //     topBarTitle={topBarTitle}
+                            // />
                         )}
-
                     </div>
 
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto border-2 border-cyan-600 rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
                             <TableHeader />
                             {datatableData?.length > 0 && <TableBody />}

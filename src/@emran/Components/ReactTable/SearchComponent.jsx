@@ -7,9 +7,12 @@ const searchStyles = {
     container:`
     flex justify-between
     relative
-    rounded-lg
+    rounded-full
     bg-gray-100
     h-10
+    border-1
+    border-orange-400
+    focus:outline-blue-500
     max-w-fit`,
 
     searchWrapper:`
@@ -33,9 +36,7 @@ const searchStyles = {
     xl:w-[45ch]
     lg:w-[35ch]
     md:w-[30ch]
-    focus:ring-2
-    focus:ring-blue-500
-    focus:ring-opacity-50
+    focus:ring-none
     transition-all
     duration-200
     `,
@@ -77,7 +78,7 @@ const SearchComponent = ({ setGlobalFilter }) => {
             <div className={searchStyles.searchWrapper}>
                 <div className={searchStyles.iconWrapper}>
                     <IoSearchOutline
-                        color="#6B7280"
+                        color="#e8a924"
                         height="20px"
                         width="20px"
                     />
@@ -96,7 +97,7 @@ const SearchComponent = ({ setGlobalFilter }) => {
                     className={searchStyles.clearButton(isDisableCancelIcon)}
                 >
                     <IoCloseCircleOutline
-                        color={isDisableCancelIcon ? "#9CA3AF" : "#4B5563"}
+                        color={isDisableCancelIcon ? "#9CA3AF" : "#fa0055"}
                         height="20px"
                         width="20px"
                     />
