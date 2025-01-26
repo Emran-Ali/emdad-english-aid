@@ -90,7 +90,7 @@ const useDataTableFetchData = ({
   }, [tableData]);
 
   // Debounce the fetch function to prevent too many API calls
-  const dFetchData = debounce(onFetchData, 30*1000);
+  const dFetchData = debounce(onFetchData, 500);
 
   return {
     onFetchData: dFetchData,

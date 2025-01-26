@@ -129,19 +129,19 @@ const FilterField = ({filters, setFilters, onFilterChange}) => {
     }, {}),
   });
 
-  // Watch all fields for changes
-  const watchedFields = watch();
-
   // Update filters whenever fields change
   React.useEffect(() => {
-    const activeFilters = Object.entries(watchedFields)
-      .filter(([_, value]) => value !== '')
-      .map(([key, value]) => ({
-        id: key,
-        value: value,
-      }));
-    onFilterChange(activeFilters);
-  }, [watchedFields, onFilterChange]);
+    const subscription = watch((newValues) => {
+      const activeFilters = Object.entries(newValues)
+        .filter(([_, value]) => value !== '')
+        .map(([key, value]) => ({
+          id: key,
+          value: value,
+        }));
+      onFilterChange(activeFilters);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, onFilterChange]);
 
   const handleReset = useCallback(() => {
     reset();
