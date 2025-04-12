@@ -32,11 +32,15 @@ export const POST = async (req) => {
 };
 
 export const GET = async (req) => {
-    console.log(req.body, 'request');
+    console.log(req, 'request');
     try {
         // Extract query parameters, e.g., id
         const url = new URL(req.url);
         const userId = url.searchParams.get('id');
+        const page = url.searchParams.get('page');
+        const per_page = url.searchParams.get('per_page');
+        const search = url.searchParams.get('search');
+
 
         if (userId) {
             // Fetch a specific user by ID

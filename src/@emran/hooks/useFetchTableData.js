@@ -1,5 +1,5 @@
 // hooks/useDataTableFetchData.js
-import React, {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import debounce from 'lodash/debounce';
 import useSWR from 'swr';
 import {apiGet} from '@emran/lib/axios';
