@@ -1,10 +1,20 @@
 'use client';
+import Link from 'next/link';
+import {usePathname} from 'next/navigation';
 import {useState} from 'react';
+import {GiCrossedBones} from 'react-icons/gi';
+import {MdOutlineMenuOpen} from 'react-icons/md';
+
 const Navbar = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const handleMobileNav = () => {
     setMobileNavOpen(!mobileNavOpen);
   };
+  const path = usePathname();
+
+  console.log(path);
+  const activeClass = 'rounded-3xl border border-lime-400 py-2 px-4';
+
   return (
     <div className='relative overflow-hidden'>
       <div className='container px-4 mx-auto'>
@@ -34,16 +44,28 @@ const Navbar = () => {
             <div className='flex flex-wrap items-center'>
               <div className='w-auto hidden lg:block'>
                 <ul className='flex items-center mr-12'>
-                  <li className='mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter'>
-                    <a href='about.html'>About</a>
+                  <li
+                    className={`mr-12 cursor-pointer text-white font-medium hover:text-opacity-90 tracking-tighter ${
+                      path === '/about' ? activeClass : ''
+                    }`}>
+                    <Link href='/about'>Abouts</Link>
                   </li>
-                  <li className='mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter'>
+                  <li
+                    className={`mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter ${
+                      path === '/about' ? activeClass : ''
+                    }`}>
                     <a href='pricing.html'>Pricing</a>
                   </li>
-                  <li className='mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter'>
+                  <li
+                    className={`mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter ${
+                      path === '/about' ? activeClass : ''
+                    }`}>
                     <a href='blog.html'>Blog</a>
                   </li>
-                  <li className='text-white font-medium hover:text-opacity-90 tracking-tighter'>
+                  <li
+                    className={`mr-12 text-white font-medium hover:text-opacity-90 tracking-tighter ${
+                      path === '/about' ? activeClass : ''
+                    }`}>
                     <a href='contact.html'>Contact</a>
                   </li>
                 </ul>
@@ -59,27 +81,9 @@ const Navbar = () => {
               </div>
               <div className='w-auto lg:hidden'>
                 <button
-                  className='relative z-10 inline-block'
+                  className='relative z-10 inline-block bg-lime-400 rounded-full p-2 text-black hover:bg-lime-500 focus:ring-4 focus:ring-lime-500 focus:ring-opacity-40'
                   onClick={handleMobileNav}>
-                  <svg
-                    className='text-lime-400'
-                    width='48'
-                    height='48'
-                    viewbox='0 0 48 48'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'>
-                    <rect
-                      width='46'
-                      height='46'
-                      rx='28'
-                      fill='currentColor'></rect>
-                    <path
-                      d='M37 32H19M37 24H19'
-                      stroke='black'
-                      stroke-width='1.5'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'></path>
-                  </svg>
+                  <MdOutlineMenuOpen className='w-8 h-8 font-bold' />
                 </button>
               </div>
             </div>
@@ -113,19 +117,7 @@ const Navbar = () => {
                   <button
                     className='inline-block text-white'
                     onClick={handleMobileNav}>
-                    <svg
-                      width='24'
-                      height='24'
-                      viewbox='0 0 24 24'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'>
-                      <path
-                        d='M6 18L18 6M6 6L18 18'
-                        stroke='currentColor'
-                        stroke-width='2'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'></path>
-                    </svg>
+                    <GiCrossedBones className='w-8 h-8 text-lime-400 hover:rotate-180' />
                   </button>
                 </div>
               </div>

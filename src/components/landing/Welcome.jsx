@@ -1,6 +1,6 @@
 const Welcome = () => {
   return (
-    <div className='relative pt-10 lg:pt-18'>
+    <div className='relative pt-2 lg:pt-10'>
       <div className='relative z-10 container px-4 md:max-w-90 mx-auto'>
         <div className='relative mb-24 text-center mx-auto'>
           <img
@@ -23,9 +23,9 @@ const Welcome = () => {
             The best English private program in Rajshahi !
           </p>
           <a
-            className='inline-block px-8 py-4 tracking-tighter bg-lime-400 hover:bg-lime-500 text-black focus:ring-4 focus:ring-lime-500 focus:ring-opacity-40 rounded-full transition duration-300'
+            className='inline-block px-8 py-4 tracking-tighter bg-lime-400 hover:bg-lime-500 font-bold text-black focus:ring-4 focus:ring-lime-500 focus:ring-opacity-40 rounded-full transition duration-300'
             href='#'>
-            Start now
+            Sign Up As a Student
           </a>
         </div>
       </div>

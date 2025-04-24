@@ -27,7 +27,7 @@ const ProfileCard = ({profile}) => {
 
   return (
     <div className='w-full h-full'>
-      <div className='card bg-gray-500 p-2 rounded-lg'>
+      <div className='card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg'>
         <img
           alt={profile.name}
           src={profile.image}

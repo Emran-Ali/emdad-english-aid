@@ -73,7 +73,7 @@ const Landing = () => {
     after:bg-blue-500">
         Let's Meet Our Team
       </h2>
-      <div className='grid justify-between w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+      <div className='grid justify-between w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6'>
         {profile.map((profileItem) => (
           <ProfileCard key={profileItem.id} profile={profileItem} />
         ))}
