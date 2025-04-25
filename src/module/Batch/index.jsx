@@ -1,39 +1,24 @@
 'use client'
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-
-
-const schema = yup
-    .object({
-        firstName: yup.string().required(),
-        age: yup.number().positive().integer().required(),
-    })
-    .required()
-
+import { useState } from "react";
+import Modal from "@/components/Modal";
+import CreateBatch from "@/module/Batch/CreateBatch";
 
 export default function App() {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(schema),
-    })
-    const onSubmit = (data) => console.log(data)
-
-
+    const [modal, setModal] = useState(false);
+    const onClose = () => {
+        setModal(false);
+    }
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("firstName")} />
-            <p>{errors.firstName?.message}</p>
-
-
-            <input {...register("age")} />
-            <p>{errors.age?.message}</p>
-
-
-            <input type="submit" />
-        </form>
+        <div className="w-full">
+            <div className="flex justify-between text-white">
+                <div className="text-4xl font-bold">Batch List</div>
+                <button className="rounded-lg px-3 py-2 bg-cyan-700 cursor-pointer font-bold" onClick={() => {
+                    setModal(true)
+                }} >Add New Batch</button>
+            </div>
+            <Modal isOpen={modal} onClose={onClose} title={'Add New Batch'} >
+                <CreateBatch />
+            </Modal>
+        </div>
     )
 }
