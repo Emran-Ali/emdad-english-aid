@@ -17,6 +17,8 @@ module.exports = {
       backgroundImage: {
         'gradient-radial-dark':
           'radial-gradient(ellipse at center, #0f0f0f, #1a1a1a)',
+        'gradient-radial-cyan':
+          'radial-gradient(ellipse at center, #00141c, #1a1a1a)',
       },
     },
   },

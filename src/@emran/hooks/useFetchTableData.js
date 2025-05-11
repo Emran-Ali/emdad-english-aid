@@ -1,17 +1,14 @@
 // hooks/useDataTableFetchData.js
-import {useCallback, useEffect, useState} from 'react';
-import debounce from 'lodash/debounce';
-import useSWR from 'swr';
 import {apiGet} from '@emran/lib/axios';
+import debounce from 'lodash/debounce';
+import {useCallback, useEffect, useState} from 'react';
+import useSWR from 'swr';
 
 export const countPaginatePage = (totalData, limit) => {
   return totalData < 1 ? 0 : Math.ceil(totalData / limit);
 };
 
-const useDataTableFetchData = ({
-                                 urlPath,
-                                 filters: mappedFilters,
-                               }) => {
+const useDataTableFetchData = ({urlPath, filters: mappedFilters}) => {
   const [pageCount, setPageCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [params, setParams] = useState({});
@@ -31,15 +28,7 @@ const useDataTableFetchData = ({
   );
 
   const onFetchData = useCallback(
-    ({
-       table,
-       pageIndex,
-       pageSize,
-       sorting,
-       search,
-       filters,
-       toggleRefresh,
-     }) => {
+    ({table, pageIndex, pageSize, sorting, search, filters, toggleRefresh}) => {
       const columDefs = table._getColumnDefs();
       let _params = {
         page: pageIndex + 1,
@@ -83,14 +72,12 @@ const useDataTableFetchData = ({
   useEffect(() => {
     if (tableData) {
       setTotalCount(tableData?.data?.meta?.total);
-      setPageCount(
-        countPaginatePage(tableData?.data?.meta?.total, params?.per_page),
-      );
+      setPageCount(tableData?.data?.meta?.total_pages);
     }
   }, [tableData]);
 
   // Debounce the fetch function to prevent too many API calls
-  const dFetchData = debounce(onFetchData, 500);
+  const dFetchData = debounce(onFetchData, 1000 * 60);
 
   return {
     onFetchData: dFetchData,
