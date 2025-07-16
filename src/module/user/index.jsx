@@ -1,10 +1,10 @@
 'use client';
-import {useMemo, useState} from 'react';
 import Modal from '@/components/Modal';
 import CreateUser from '@/module/user/CreateUser';
 import DataTable from '@emran/Components/ReactTable/DataTable';
 import {processCellLimitedString} from '@emran/Components/ReactTable/tableHelper';
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
+import {useMemo, useState} from 'react';
 
 export default function User() {
   const [modal, setModal] = useState(false);
@@ -73,6 +73,7 @@ export default function User() {
       type: 'date',
     },
   ];
+
   return (
     <div className='w-full'>
       <div className='flex justify-between text-white'>
@@ -94,6 +95,7 @@ export default function User() {
         totalCount={totalCount}
         onClickRefresh={mutate}
         enableCheckbox={false}
+        showSearchComponent={true}
         showTopBar={true}
         tableTitle={'User Table'}
         enableRowNumbers={true}

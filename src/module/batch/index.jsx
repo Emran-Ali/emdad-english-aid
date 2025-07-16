@@ -5,6 +5,9 @@ import DataTable from '@emran/Components/ReactTable/DataTable';
 import {processCellLimitedString} from '@emran/Components/ReactTable/tableHelper';
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import {useMemo, useState} from 'react';
+import {AiTwotoneDelete} from 'react-icons/ai';
+import {BiSolidShow} from 'react-icons/bi';
+import {FaEdit} from 'react-icons/fa';
 
 export default function App() {
   const [modal, setModal] = useState(false);
@@ -66,7 +69,21 @@ export default function App() {
         enableColumnFilter: false,
         cell: (props) => {
           let data = props.row.original;
-          return <button>{data.id}</button>;
+          return (
+            <div className='flex gap-2'>
+              <button className='text-green-500'>
+                <BiSolidShow />
+              </button>
+              <button className='text-orange-500'>
+                <FaEdit />
+              </button>
+              <button
+                className='text-red-500'
+                onClick={() => deleteBatch(data.id)}>
+                <AiTwotoneDelete />
+              </button>
+            </div>
+          );
         },
         header: 'Actions',
         enableHiding: false,
@@ -74,6 +91,10 @@ export default function App() {
     ],
     [],
   );
+
+  const deleteBatch = (id) => {
+    console.log(id);
+  };
 
   const filterConfig = [
     {
@@ -109,6 +130,7 @@ export default function App() {
         columns={columns}
         tableData={UserData}
         fetchData={onFetchData}
+        serverSide={true}
         loading={loading}
         pageCount={pageCount}
         totalCount={totalCount}

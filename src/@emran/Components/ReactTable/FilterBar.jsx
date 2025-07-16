@@ -12,6 +12,7 @@ const FilterBar = ({
   onRefreshCallback,
   filterConfig,
   onFetchData,
+  showSearchComponent,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -41,7 +42,9 @@ const FilterBar = ({
   return (
     <div className='bg-white shadow rounded-lg p-4'>
       <div className='flex justify-between items-center mb-4'>
-        <SearchComponent setGlobalFilter={setGlobalFilter} />
+        {showSearchComponent && (
+          <SearchComponent setGlobalFilter={setGlobalFilter} />
+        )}
         {filterConfig.length > 0 && (
           <button
             className='flex items-center gap-2 text-gray-700 hover:text-black'

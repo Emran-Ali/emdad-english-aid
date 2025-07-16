@@ -77,10 +77,10 @@ const useDataTableFetchData = ({urlPath, filters: mappedFilters}) => {
   }, [tableData]);
 
   // Debounce the fetch function to prevent too many API calls
-  const dFetchData = debounce(onFetchData, 1000 * 60);
+  const dFetchData = debounce(onFetchData, 5000 * 60);
 
   return {
-    onFetchData: dFetchData,
+    onFetchData: onFetchData,
     data: tableData?.data?.data || [],
     summary: tableData?.data?.summary || [],
     loading: !tableData && !error,

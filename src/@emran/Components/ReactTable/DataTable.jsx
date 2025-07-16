@@ -17,16 +17,13 @@ const DataTable = ({
   totalCount,
   pageCount: controlledPageCount,
   showTopBar = true,
-  isStylePrintable = false,
   onClickRefresh,
   enableRowNumbers = true,
-  topBarExtraElement,
   hiddenColumns = [],
   showSearchComponent = true,
   tableTitle,
   enableCheckbox = false,
   filterConfig = [],
-  topBarTitle,
 }) => {
   // States
   const [columnFilters, setColumnFilters] = useState([]);
@@ -216,7 +213,7 @@ const DataTable = ({
 
   // Table body component
   const TableBody = () => (
-    <tbody className='bg-gradient-radial-cyan text-white divide-y divide-gray-200'>
+    <tbody className='bg-gray-100 text-black divide-y divide-gray-200'>
       {table.getRowModel().rows.map((row) => (
         <tr key={row.id}>
           {row.getVisibleCells().map((cell) => (
@@ -234,7 +231,7 @@ const DataTable = ({
     <div className='flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6'>
       <div className='flex items-center'>
         <span className='text-sm text-gray-700'>
-          Show
+          Showing
           <select
             value={pageSize}
             onChange={handleChangeRowsPerPage}
@@ -256,16 +253,17 @@ const DataTable = ({
         <button
           onClick={() => table.setPageIndex((old) => Math.max(old - 1, 0))}
           disabled={pageIndex === 0}
-          className='px-3 py-1 border rounded-md disabled:opacity-50'>
+          className='px-3 bg-gray-100 text-black py-1 border rounded-md disabled:opacity-50
+          disabled:cursor-not-allowed'>
           Prev
         </button>
-        <span className='text-sm text-gray-700'>
+        <span className='text-sm text-black'>
           Page {pageIndex + 1} of {Math.ceil(totalCount / pageSize)}
         </span>
         <button
           onClick={() => table.setPageIndex((old) => old + 1)}
           disabled={pageIndex >= Math.ceil(totalCount / pageSize) - 1}
-          className='px-3 py-1 border rounded-md disabled:opacity-50'>
+          className='px-3 py-1 bg-gray-100 text-black border rounded-md disabled:opacity-50 disabled:cursor-not-allowed'>
           Next
         </button>
       </div>
@@ -286,6 +284,7 @@ const DataTable = ({
               onRefreshCallback={onClickRefresh}
               filterConfig={filterConfig}
               onFetchData={fetchData}
+              showSearchComponent={showSearchComponent}
             />
           )}
 
