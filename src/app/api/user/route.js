@@ -1,6 +1,6 @@
 import {db} from '@/@emran/lib/db';
-import {hashPassword} from '@/@emran/lib/utile/passwordManage';
-import {photoUpload} from '@/@emran/lib/utile/photoUpload';
+import {hashPassword} from '@emran/lib/util/passwordManage';
+import {photoUpload} from '@emran/lib/util/photoUpload';
 import {users} from '@/db/schema/schema';
 import {count, like, or} from 'drizzle-orm';
 

@@ -4,7 +4,8 @@
       "@/*": ["./src/*"],
       "@emran/*": ["./src/@emran/*"],
       "@constants/*": ["./src/@emran/Constants/*"],
-      "@util/*": ["./src/@emran/lib/utile/*"],
+      "@util/*": ["./src/@emran/lib/util/*"],
+      "@auth/*": ["./src/@emran/lib/auth/*"],
       "@service/*": ["./src/@emran/service/*"]
     }
   }
