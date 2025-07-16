@@ -1,9 +1,7 @@
 import dynamic from 'next/dynamic';
 
-const BatchList = dynamic(() => import('@/module/Batch/index'), { ssr: false });
+const BatchList = dynamic(() => import('@/module/batch/index'), {ssr: false});
 
 export default function Home() {
-    return (
-        <BatchList />
-    );
+  return <BatchList />;
 }
