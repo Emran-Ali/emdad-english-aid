@@ -1,28 +1,32 @@
 'use client';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {login} from '@service/loginService';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
-import {useJWTAuthActions} from '@auth/AuthProvider';
-import {router} from 'next/client';
+import {useJWTAuth, useJWTAuthActions} from '@auth/AuthProvider';
+import {useRouter} from 'next/navigation';
 
 const schema = yup
   .object({
     phone: yup
       .string()
       .required('Phone Number is required')
-      .max(11, 'Name can\'t exceed 200 characters'),
+      .max(11, 'Input a valid phone number'),
     password: yup.string().required('Password is required'),
   })
   .required();
 
 const SignInPage = () => {
+  const router = useRouter();
 
+  const {isAuthenticated} = useJWTAuth();
+  if (isAuthenticated) {
+    router.push('/user');
+  }
   const {signInUser} = useJWTAuthActions();
   const lonIn = async (data) => {
-    const res = await signInUser({phone, password});
+    const res = await signInUser(data);
     if (res.success) {
-      await router.push('/dashboard');
+      await router.push('/user');
     } else {
       console.log('an error occured');
     }

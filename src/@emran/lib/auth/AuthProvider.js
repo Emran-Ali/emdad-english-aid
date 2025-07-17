@@ -36,7 +36,7 @@ const JWTAuthAuthProvider = ({children}) => {
         return;
       }
       try {
-        const {data} = await apiGet('api/signin');
+        // const {data} = await apiGet('api/signin');
 
         setJWTAuthData({
           user: data.data,
@@ -60,6 +60,7 @@ const JWTAuthAuthProvider = ({children}) => {
       const {data} = await apiPost('api/signin', {phone, password});
       Cookies.set('authToken', JSON.stringify(data.data.authToken));
       Cookies.set('refreshToken', JSON.stringify(data.data.refreshToken));
+      Cookies.set('user', JSON.stringify(data.data.user));
 
       setJWTAuthData({
         user: data.user,

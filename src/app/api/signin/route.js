@@ -12,6 +12,7 @@ export async function POST(req) {
   const userAgent = req.headers.get('user-agent') || null;
   const ipAddress = req.ip || null;
 
+
   try {
     const user = await db.select().from(users).where(eq(users.contactNumber, phone)).execute().then(res => res[0]);
 
@@ -42,6 +43,7 @@ export async function POST(req) {
       {status: 200},
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({error: 'Something went wrong'}, {status: 500});
   }
 

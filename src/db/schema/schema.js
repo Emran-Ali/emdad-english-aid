@@ -50,6 +50,7 @@ export const batchTable = pgTable('batch', {
   batchDaysId: integer('batch_day_id').references(() => BatchDay.id),
   type: varchar('type', {length: 100}),
   status: boolean('status'),
+  ...timestamps,
 });
 
 export const dayEnum = pgEnum('day', [
@@ -66,5 +67,5 @@ export const BatchDay = pgTable('batch_day', {
   id: serial('id').primaryKey().unique(),
   name: varchar('name', {length: 200}).notNull(),
   dayPerWeek: integer('day_per_week').notNull().default(3),
-  days: array(dayEnum).notNull(),
+  days: dayEnum('days').array().notNull(),
 });
