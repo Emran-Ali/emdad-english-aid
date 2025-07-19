@@ -1,16 +1,28 @@
 // app/layout.js
-import JWTAuthAuthProvider from '@auth/AuthProvider'; // update path if needed
-
-export const metadata = {
-  title: 'Emdad English Aid',
-  description: 'English Private program for HSC, Academic  and Admission',
-};
+'use client';
+import {SessionProvider} from 'next-auth/react';
 
 export default function RootLayout({children}) {
   return (
     <html lang="en">
+    <head>
+      <title>Emddad English Aid</title>
+      <meta charSet="utf-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      />
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
+      <link
+        href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,300,500&amp;display=swap"
+        rel="stylesheet"
+      />
+      <script
+        src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"
+        defer="defer"></script>
+    </head>
     <body>
-    <JWTAuthAuthProvider>{children}</JWTAuthAuthProvider>
+    <SessionProvider>{children}</SessionProvider>
     </body>
     </html>
   );

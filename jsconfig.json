@@ -6,7 +6,8 @@
       "@constants/*": ["./src/@emran/Constants/*"],
       "@util/*": ["./src/@emran/lib/util/*"],
       "@auth/*": ["./src/@emran/lib/auth/*"],
-      "@service/*": ["./src/@emran/service/*"]
+      "@service/*": ["./src/@emran/service/*"],
+      "@db/*": ["./src/@emran/db/*"]
     }
   }
 }

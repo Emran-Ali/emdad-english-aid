@@ -1,11 +1,11 @@
-import {BatchTable} from '@/db/schema/schema';
+import {batchTable} from '@/db/schema/schema';
 import {db} from '@emran/lib/db';
 import {count} from 'drizzle-orm';
 
 export const POST = async (req) => {
   try {
     const body = await req.json();
-    const newBatch = await db.insert(BatchTable).values({
+    const newBatch = await db.insert(batchTable).values({
       name: body.name,
       students: body.students,
       year: body.year,
@@ -38,8 +38,8 @@ export const GET = async (req) => {
     if (batchId) {
       const batch = await db
         .select()
-        .from(BatchTable)
-        .where(BatchTable.id.eq(batchId))
+        .from(batchTable)
+        .where(batchTable.id.eq(batchId))
         .execute();
 
       if (!batch.length) {
@@ -59,7 +59,7 @@ export const GET = async (req) => {
     let total = 0;
     const countResult = await db
       .select({count: count()})
-      .from(BatchTable)
+      .from(batchTable)
       .execute();
 
     // Safely extract the count value
@@ -72,7 +72,7 @@ export const GET = async (req) => {
     // Get paginated data
     const batches = await db
       .select()
-      .from(BatchTable)
+      .from(batchTable)
       .limit(per_page)
       .offset(offset)
       .execute();

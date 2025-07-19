@@ -1,36 +1,25 @@
 'use client';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
-import {useJWTAuth, useJWTAuthActions} from '@auth/AuthProvider';
-import {useRouter} from 'next/navigation';
+import {signIn} from 'next-auth/react';
+import {useState} from 'react';
 
 const schema = yup
   .object({
-    phone: yup
+    email: yup
       .string()
-      .required('Phone Number is required')
-      .max(11, 'Input a valid phone number'),
+      .email('Invalid email format')
+      .required('Email is required'),
     password: yup.string().required('Password is required'),
-  })
-  .required();
+  });
 
 const SignInPage = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const {isAuthenticated} = useJWTAuth();
-  if (isAuthenticated) {
-    router.push('/user');
-  }
-  const {signInUser} = useJWTAuthActions();
-  const lonIn = async (data) => {
-    const res = await signInUser(data);
-    if (res.success) {
-      await router.push('/user');
-    } else {
-      console.log('an error occured');
-    }
-  };
   const {
     register,
     handleSubmit,
@@ -38,6 +27,41 @@ const SignInPage = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        router.push('/dashboard');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('An error occurred during login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    try {
+      await signIn('google', {callbackUrl: '/dashboard'});
+    } catch (error) {
+      console.error('Google login error:', error);
+      setError('Failed to login with Google');
+      setIsLoading(false);
+    }
+  };
   return (
     <div
       className="min-h-screen  flex flex-col justify-center bg-cover bg-fixed"
@@ -53,41 +77,43 @@ const SignInPage = () => {
                 Login
               </h1>
             </div>
-            <form onSubmit={handleSubmit(lonIn)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="divide-y divide-gray-200">
                 <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                  <div className="relative">
-                    <input
-                      autoComplete="off"
-                      id="email"
-                      {...register('phone')}
-                      name="phone"
-                      type="text"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Phone number"
-                    />
-                    <label
-                      htmlFor="email"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
-                      Phone Number
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
                     </label>
-                  </div>
-                  <div className="relative">
                     <input
-                      autoComplete="off"
-                      id="password"
-                      {...register('password')}
-                      name="password"
-                      type="password"
-                      className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
-                      placeholder="Password"
+                      id="email"
+                      {...register('email')}
+                      type="email"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-0   transition duration-200 ${
+                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder="you@example.com"
+                      disabled={isLoading}
                     />
-                    <label
-                      htmlFor="password"
-                      className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
+                  </div>
+                  <div>
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                       Password
                     </label>
+                    <input
+                      id="password"
+                      {...register('password')}
+                      type="password"
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-0 focus:ring-cyan-500 focus:border-transparent transition duration-200 ${
+                        errors.password ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                      placeholder="••••••••"
+                      disabled={isLoading}
+                    />
+                    {errors.password && (
+                      <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                    )}
                   </div>
+
                   <div className="relative">
                     <button
                       className="w-full bg-cyan-700 text-white rounded-md px-2 py-1 hover:bg-cyan-800"
@@ -102,7 +128,9 @@ const SignInPage = () => {
 
           <div className="w-full flex justify-center">
             <button
-              className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+              className="flex items-center bg-white border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              onClick={handleGoogleLogin}
+            >
               <svg
                 className="h-6 w-6 mr-2"
                 xmlns="http://www.w3.org/2000/svg"

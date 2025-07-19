@@ -18,7 +18,7 @@ module.exports = {
         'gradient-radial-dark':
           'radial-gradient(ellipse at center, #0f0f0f, #1a1a1a)',
         'gradient-radial-cyan':
-          'radial-gradient(ellipse at center, #00141c, #1a1a1a)',
+          'radial-gradient(ellipse at center, #1c1c1e, #6f6e71)',
       },
       backgroundSize: {
         '200%': '200% 200%',
