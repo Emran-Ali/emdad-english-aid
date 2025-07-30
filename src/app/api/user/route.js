@@ -1,11 +1,20 @@
 import {db} from '@/@emran/lib/db';
+import {users} from '@/db/schema/schema';
 import {hashPassword} from '@emran/lib/util/passwordManage';
 import {photoUpload} from '@emran/lib/util/photoUpload';
-import {users} from '@/db/schema/schema';
 import {count, like, or} from 'drizzle-orm';
+import {getServerSession} from 'next-auth';
 
 export const POST = async (req) => {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        {error: 'Unauthorized. Please login first.'},
+        {status: 401},
+      );
+    }
+
     const body = await req.json();
     const password = await hashPassword(body.password);
 
@@ -35,8 +44,6 @@ export const POST = async (req) => {
 
 export const GET = async (req) => {
   try {
-    console.log('req receive');
-    // Extract query parameters, e.g., id
     const url = new URL(req.url);
     const userId = url.searchParams.get('id');
     const page = parseInt(url.searchParams.get('page')) || 1;

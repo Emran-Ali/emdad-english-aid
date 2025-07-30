@@ -37,7 +37,7 @@ export default function RootLayout({children}) {
       <ApiProvider>
         <Menu />
         <div className="w-full">
-          <div className="w-full px-6 py-4">{children}</div>
+          <div className="max-w-[1444] px-6 md:px-12 py-4">{children}</div>
         </div>
       </ApiProvider>
     </main>
