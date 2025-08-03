@@ -8,6 +8,13 @@
       "when": 1754229477693,
       "tag": "20250803135757_secret_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754233953787,
+      "tag": "20250803151233_charming_squirrel_girl",
+      "breakpoints": true
     }
   ]
 }

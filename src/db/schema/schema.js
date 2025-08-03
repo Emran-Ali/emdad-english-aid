@@ -6,6 +6,7 @@ import {
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   serial,
   text,
   time,
@@ -71,7 +72,49 @@ export const expenseTypeEnum = pgEnum('expense_type', [
   'other',
 ]);
 
-// Users table (improved)
+// auth related db
+export const account = pgTable(
+  'account',
+  {
+    userId: integer('user_id').notNull(),
+    type: varchar('type', {length: 255}).notNull(),
+    provider: varchar('provider', {length: 255}).notNull(),
+    providerAccountId: varchar('provider_account_id', {length: 255}).notNull(),
+    refresh_token: text('refresh_token'),
+    access_token: text('access_token'),
+    expires_at: integer('expires_at'),
+    token_type: varchar('token_type', {length: 255}),
+    scope: varchar('scope', {length: 255}),
+    id_token: text('id_token'),
+    session_state: varchar('session_state', {length: 255}),
+  },
+  (table) => ({
+    compoundKey: primaryKey({
+      columns: [table.provider, table.providerAccountId],
+    }),
+  }),
+);
+
+export const session = pgTable('session', {
+  id: serial('id').primaryKey(),
+  sessionToken: varchar('session_token', {length: 255}).notNull().unique(),
+  userId: integer('user_id').notNull(),
+  expires: timestamp('expires', {withTimezone: true}).notNull(),
+});
+
+export const verificationTokens = pgTable(
+  'verification_tokens',
+  {
+    identifier: varchar('identifier', {length: 255}).notNull(),
+    token: varchar('token', {length: 255}).notNull().unique(),
+    expires: timestamp('expires', {withTimezone: true}).notNull(),
+  },
+  (table) => ({
+    compositePk: primaryKey({columns: [table.identifier, table.token]}),
+  }),
+);
+
+// Users table
 export const users = pgTable(
   'users',
   {

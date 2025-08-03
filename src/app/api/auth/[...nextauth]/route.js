@@ -1,16 +1,14 @@
 // src/app/api/auth/[...nextauth]/route.js
-import {DrizzleAdapter} from '@auth/drizzle-adapter';
+import {students, users} from '@/db/schema/schema';
 import {db} from '@emran/lib/db';
+import {comparePassword} from '@util/passwordManage';
+import {generateAccessToken, generateRefreshToken} from '@util/token';
 import {eq} from 'drizzle-orm';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import {users, userSessions} from '@/db/schema/schema';
-import {comparePassword} from '@util/passwordManage';
-import {generateAccessToken, generateRefreshToken} from '@util/token';
 
 export const authOptions = {
-  // adapter: DrizzleAdapter(db),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -52,16 +50,19 @@ export const authOptions = {
           email: user.email,
           name: user.name,
           image: user.profilePhoto,
-          role: user.roleId,
+          role: user.role,
         };
       },
     }),
   ],
   callbacks: {
-    async signIn({user, account, profile}) {
-      console.log('SignIn callback - Provider:', account?.provider);
-      console.log('User data:', user);
+    async signIn({user, account}) {
       if (account?.provider === 'google') {
+        if (!user.email) {
+          console.error('❌ Google account did not return an email');
+          return false;
+        }
+
         try {
           const existingUser = await db
             .select()
@@ -70,15 +71,33 @@ export const authOptions = {
             .execute()
             .then((res) => res[0]);
 
+          // If user does not exist, insert both user and student record
           if (!existingUser) {
-            await db.insert(users).values({
-              email: user.email,
-              name: user.name || '',
-              profilePhoto: user.image || '',
-              provider: 'google',
-              googleId: account.providerAccountId,
+            const [newUser] = await db
+              .insert(users)
+              .values({
+                email: user.email,
+                name: user.name || 'No Name',
+                profilePhoto: user.image || '',
+                provider: 'google',
+                googleId: account.providerAccountId,
+                role: 'student',
+              })
+              .returning(); // So we get the inserted user's id
+
+            // Now create the corresponding student
+            await db.insert(students).values({
+              userId: newUser.id,
+              studentId: `STD-${newUser.id}`, // Optional: generate a placeholder ID
+              guardianName: null,
+              guardianContact: null,
+              emergencyContact: null,
+              bloodGroup: null,
             });
-          } else if (existingUser.provider !== 'google') {
+          }
+
+          // If the user exists but has no Google ID, update their info
+          else if (existingUser.provider !== 'google') {
             await db
               .update(users)
               .set({
@@ -88,10 +107,11 @@ export const authOptions = {
               .where(eq(users.id, existingUser.id));
           }
         } catch (error) {
-          console.error('Error during Google sign in:', error);
+          console.error('❌ Error during Google sign in:', error);
           return false;
         }
       }
+
       return true;
     },
     async jwt({token, user, account}) {
@@ -105,24 +125,16 @@ export const authOptions = {
 
         if (dbUser) {
           token.userId = dbUser.id;
-          token.role = dbUser.roleId;
+          token.role = dbUser.role;
           token.name = dbUser.name;
           token.image = dbUser.profilePhoto;
 
           token.accessToken = generateAccessToken({
             userId: dbUser.id,
             name: dbUser.name,
-            role: dbUser.roleId,
+            role: dbUser.role,
           });
           token.refreshToken = generateRefreshToken(dbUser.id);
-
-          await db.insert(userSessions).values({
-            userId: dbUser.id,
-            refreshToken: token.refreshToken,
-            userAgent: null,
-            ipAddress: null,
-            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          });
         }
       }
       return token;
