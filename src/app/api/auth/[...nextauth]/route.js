@@ -141,7 +141,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: '/signin', // Fixed path
+    signIn: '/signin',
   },
   session: {
     strategy: 'jwt',

@@ -1,6 +1,6 @@
 {
-  "id": "d391a96d-5645-4018-9ef1-e9b142aa53b8",
-  "prevId": "95eb85cf-4b28-470d-8d93-b3d8bb38ddda",
+  "id": "05da3827-e9e0-4ecc-ba19-a8a8d75db2b1",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1655,7 +1655,8 @@
       "name": "batch_type",
       "schema": "public",
       "values": [
-        "academic_hsc",
+        "hsc_1st_year",
+        "hsc_2nd_year",
         "admission",
         "re_admission"
       ]

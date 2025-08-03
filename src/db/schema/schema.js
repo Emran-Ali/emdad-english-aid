@@ -24,8 +24,8 @@ const timestamps = {
 // Enums
 export const rolesEnum = pgEnum('role', ['admin', 'staff', 'student']);
 export const batchTypeEnum = pgEnum('batch_type', [
-  'academic_hsc1',
-  'academic_hsc2',
+  'hsc_1st_year',
+  'hsc_2nd_year',
   'admission',
   're_admission',
 ]);

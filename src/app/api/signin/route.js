@@ -30,14 +30,6 @@ export async function POST(req) {
     });
     const refreshToken = generateRefreshToken(user.id);
 
-    await db.insert(userSessions).values({
-      userId: user.id,
-      refreshToken,
-      userAgent,
-      ipAddress,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-
     return new Response(
       JSON.stringify({
         message: 'Batch fetched successfully',

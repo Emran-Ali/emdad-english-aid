@@ -1,9 +1,11 @@
 CREATE TYPE "public"."attendance_status" AS ENUM('present', 'absent', 'late', 'excused');--> statement-breakpoint
-CREATE TYPE "public"."batch_type" AS ENUM('academic_hsc', 'admission', 're_admission');--> statement-breakpoint
+CREATE TYPE "public"."batch_type" AS ENUM('hsc_1st_year', 'hsc_2nd_year', 'admission', 're_admission');--> statement-breakpoint
+CREATE TYPE "public"."day" AS ENUM('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');--> statement-breakpoint
 CREATE TYPE "public"."exam_type" AS ENUM('weekly', 'monthly', 'midterm', 'final', 'practice');--> statement-breakpoint
 CREATE TYPE "public"."expense_type" AS ENUM('salary', 'rent', 'utilities', 'materials', 'other');--> statement-breakpoint
 CREATE TYPE "public"."payment_method" AS ENUM('cash', 'bank_transfer', 'mobile_banking', 'card');--> statement-breakpoint
 CREATE TYPE "public"."payment_status" AS ENUM('pending', 'partial', 'completed', 'failed');--> statement-breakpoint
+CREATE TYPE "public"."role" AS ENUM('admin', 'staff', 'student');--> statement-breakpoint
 CREATE TABLE "attendance" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"batch_id" integer NOT NULL,
@@ -188,22 +190,24 @@ CREATE TABLE "students" (
 	CONSTRAINT "students_student_id_unique" UNIQUE("student_id")
 );
 --> statement-breakpoint
-ALTER TABLE "batch_day" DISABLE ROW LEVEL SECURITY;--> statement-breakpoint
-ALTER TABLE "batch" DISABLE ROW LEVEL SECURITY;--> statement-breakpoint
-ALTER TABLE "user_sessions" DISABLE ROW LEVEL SECURITY;--> statement-breakpoint
-DROP TABLE "batch_day" CASCADE;--> statement-breakpoint
-DROP TABLE "batch" CASCADE;--> statement-breakpoint
-DROP TABLE "user_sessions" CASCADE;--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "role" SET DATA TYPE text;--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "role" SET DEFAULT 'student'::text;--> statement-breakpoint
-DROP TYPE "public"."role";--> statement-breakpoint
-CREATE TYPE "public"."role" AS ENUM('admin', 'staff', 'student');--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "role" SET DEFAULT 'student'::"public"."role";--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "role" SET DATA TYPE "public"."role" USING "role"::"public"."role";--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "profile_photo" DROP NOT NULL;--> statement-breakpoint
-ALTER TABLE "users" ALTER COLUMN "address" SET DATA TYPE varchar(500);--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "role" "role" DEFAULT 'student' NOT NULL;--> statement-breakpoint
-ALTER TABLE "users" ADD COLUMN "is_active" boolean DEFAULT true NOT NULL;--> statement-breakpoint
+CREATE TABLE "users" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"profile_photo" varchar(255),
+	"name" varchar(255) NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"contact_number" varchar(20),
+	"password" varchar(255),
+	"address" varchar(500),
+	"role" "role" DEFAULT 'student' NOT NULL,
+	"provider" varchar(50) DEFAULT 'credentials',
+	"google_id" varchar(255),
+	"is_active" boolean DEFAULT true NOT NULL,
+	"updated_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"deleted_at" timestamp,
+	CONSTRAINT "users_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
 ALTER TABLE "attendance" ADD CONSTRAINT "attendance_batch_id_batches_id_fk" FOREIGN KEY ("batch_id") REFERENCES "public"."batches"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attendance" ADD CONSTRAINT "attendance_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "batch_schedules" ADD CONSTRAINT "batch_schedules_batch_id_batches_id_fk" FOREIGN KEY ("batch_id") REFERENCES "public"."batches"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -233,5 +237,4 @@ CREATE INDEX "notification_read_idx" ON "notifications" USING btree ("is_read");
 CREATE INDEX "payment_status_idx" ON "payments" USING btree ("status");--> statement-breakpoint
 CREATE INDEX "payment_due_date_idx" ON "payments" USING btree ("due_date");--> statement-breakpoint
 CREATE INDEX "email_idx" ON "users" USING btree ("email");--> statement-breakpoint
-CREATE INDEX "role_idx" ON "users" USING btree ("role");--> statement-breakpoint
-ALTER TABLE "users" DROP COLUMN "roleId";
+CREATE INDEX "role_idx" ON "users" USING btree ("role");
