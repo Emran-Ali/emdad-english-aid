@@ -8,8 +8,6 @@ import {comparePassword} from '@util/passwordManage';
 
 export async function POST(req) {
   const {email, password} = await req.json();
-  const userAgent = req.headers.get('user-agent') || null;
-  const ipAddress = req.ip || null;
 
   try {
     const user = await db

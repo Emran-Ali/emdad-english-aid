@@ -26,37 +26,37 @@ const ProfileCard = ({profile}) => {
   };
 
   return (
-    <div className='w-full h-full'>
-      <div className='card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg'>
+    <div className="w-full h-full">
+      <div className="card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg">
         <img
           alt={profile.name}
           src={profile.image}
-          className='shadow-lg rounded-full mx-auto h-52 w-52 object-cover'
+          className="shadow-lg rounded-full mx-auto h-52 w-52 object-cover"
         />
-        <div className='pt-6 text-center'>
-          <h5 className='text-xl text-yellow-300 font-bold'>{profile.name}</h5>
-          <p className='mt-1 text-sm text-white uppercase font-semibold'>
+        <div className="pt-6 text-center">
+          <h5 className="text-xl text-yellow-300 font-bold">{profile.name}</h5>
+          <p className="mt-1 text-sm text-white uppercase font-semibold">
             {profile.role}
           </p>
-          <p className='mt-1 text-sm text-cyan-400 uppercase font-semibold'>
+          <p className="mt-1 text-sm text-cyan-400 uppercase font-semibold">
             Contact : {profile.contact}
           </p>
 
           {/* Dynamic Social Links */}
-          <div className='mt-6 flex justify-center space-x-2'>
+          <div className="mt-6 flex justify-center space-x-2">
             {Object.entries(profile.socialLinks || {}).map(
-              ([platform, link]) => {
+              ([platform, link], index) => {
                 const Icon = socialIcons[platform];
                 const bgColor = socialColors[platform];
 
                 return Icon ? (
                   <a
-                    key={platform}
+                    key={index}
                     href={link}
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`${bgColor} text-white w-8 h-8 rounded-full flex items-center justify-center hover:opacity-75 transition-all`}>
-                    <Icon className='w-4 h-4' />
+                    <Icon className="w-4 h-4" />
                   </a>
                 ) : null;
               },
