@@ -72,11 +72,11 @@ const Navbar = () => {
               </div>
               <div className='w-auto hidden lg:block'>
                 <div className='inline-block'>
-                  <a
+                  <Link
                     className='inline-block px-8 py-4 text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
-                    href='login.html'>
+                    href='/signin'>
                     Login
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className='w-auto lg:hidden'>

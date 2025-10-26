@@ -58,21 +58,15 @@ const Landing = () => {
   ];
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h2
-        className="text-3xl font-bold text-center mb-8 
-    text-white-800 
-    relative 
-    after:content-[''] 
-    after:absolute 
-    after:bottom-[-10px] 
-    after:left-1/2 
-    after:transform 
-    after:translate-x-[-50%] 
-    after:w-16 
-    after:h-1 
-    after:bg-blue-500">
-        Let's Meet Our Team
-      </h2>
+      <div className='text-center'>
+        <h2 className='font-heading text-3xl sm:text-5xl lg:text-7xl text-cyan-500 tracking-tighter-xl'>
+          Let's Meet Our Team
+        </h2>
+        <p className='mb-20 text-gray-300 md:max-w-md mx-auto'>
+          Global Bank is a strategic branding agency focused on brand creation,
+          rebrands, and brand
+        </p>
+      </div>
       <div className='grid justify-between w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6'>
         {profile.map((profileItem) => (
           <ProfileCard key={profileItem.id} profile={profileItem} />
