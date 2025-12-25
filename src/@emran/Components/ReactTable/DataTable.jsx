@@ -273,7 +273,7 @@ const DataTable = ({
   return (
     <div className='flex flex-col'>
       <div className='mt-4 bg-white rounded-lg shadow'>
-        <div className='p-6'>
+        <div className='p-6 '>
           {showTopBar && (
             <FilterBar
               tableInstance={table}
@@ -288,7 +288,7 @@ const DataTable = ({
             />
           )}
 
-          <div className='overflow-x-auto border-2 border-cyan-600 rounded-lg'>
+          <div className='overflow-x-auto border-2 border-cyan-600 rounded-lg min-h-[50vh]'>
             <table className='min-w-full divide-y divide-gray-200'>
               <TableHeader />
               {datatableData?.length > 0 && <TableBody />}

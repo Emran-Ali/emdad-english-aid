@@ -5,19 +5,22 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useBatchService} from '@service/BatchService';
 import {useForm} from 'react-hook-form';
 
-export default function AddEditBatch({onSuccess, onClose}) {
+export default function EditBatch({batchData, onSuccess, onClose}) {
   const {
     register,
     handleSubmit,
     formState: {errors},
+    reset,
   } = useForm({
     resolver: yupResolver(batchSchema),
+    defaultValues: batchData,
   });
-  const {loading, error, createBatch} = useBatchService();
+  const {loading, error, updateBatch} = useBatchService();
 
   const onSubmit = async (data) => {
-    // Normalize payload to match API expectations; batchCode is generated server-side
+    // Payload with batch ID for update
     const payload = {
+      id: batchData.id,
       name: data.name,
       type: data.type,
       academicYear: data.academicYear,
@@ -29,7 +32,7 @@ export default function AddEditBatch({onSuccess, onClose}) {
       isActive: data.isActive === undefined ? true : data.isActive,
     };
 
-    const res = await createBatch('/api/batch', payload);
+    const res = await updateBatch('/api/batch', payload);
     console.log('submit', error, 'res', res);
 
     if (res && !error) {
@@ -41,8 +44,6 @@ export default function AddEditBatch({onSuccess, onClose}) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='grid grid-cols-3 gap-4'>
-        {/* batchCode generated on server */}
-
         <div>
           <label htmlFor='name' className='block text-sm font-medium'>
             Name
@@ -170,11 +171,17 @@ export default function AddEditBatch({onSuccess, onClose}) {
           )}
         </div>
 
-        <div className='col-span-3'>
+        <div className='col-span-3 flex gap-4'>
           <button
             type='submit'
             className='mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'>
-            Submit
+            Update Batch
+          </button>
+          <button
+            type='button'
+            onClick={onClose}
+            className='mt-4 px-6 py-2 bg-gray-400 text-white rounded hover:bg-gray-500'>
+            Cancel
           </button>
         </div>
       </div>

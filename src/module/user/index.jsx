@@ -62,8 +62,8 @@ export default function User() {
   );
   const filterConfig = [
     {
-      id: 'committee_id',
-      label: 'head',
+      id: 'type',
+      label: 'Type',
       type: 'select',
       options: [{id: 1, title: 'hello'}],
     },

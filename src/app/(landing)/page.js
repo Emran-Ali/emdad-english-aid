@@ -12,7 +12,6 @@ export default function Home() {
       <Welcome />
       <Features />
       <Reviews />
-
       <SuccessStory />
       <Landing />
       <div className='w-full bg-lime-400 rounded-5xl p-6 text-sm text-center md:text-left fade-in'>

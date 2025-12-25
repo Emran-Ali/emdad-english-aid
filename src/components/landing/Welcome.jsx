@@ -30,7 +30,7 @@ const Welcome = () => {
         </div>
       </div>
       <img
-        className='absolute bottom-0 right-0'
+        className='absolute bottom-0 right-0 -z-10 pointer-events-none'
         src='/assets/template-images/headers/lines2.svg'
         alt=''
       />

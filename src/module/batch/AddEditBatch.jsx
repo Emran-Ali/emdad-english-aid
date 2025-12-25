@@ -5,7 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useBatchService} from '@service/BatchService';
 import {useForm} from 'react-hook-form';
 
-export default function AddEditBatch({onSuccess, onClose}) {
+export default function AddEditBatch() {
   const {
     register,
     handleSubmit,
@@ -31,11 +31,6 @@ export default function AddEditBatch({onSuccess, onClose}) {
 
     const res = await createBatch('/api/batch', payload);
     console.log('submit', error, 'res', res);
-
-    if (res && !error) {
-      onSuccess?.();
-      onClose?.();
-    }
   };
 
   return (
