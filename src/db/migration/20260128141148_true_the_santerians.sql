@@ -6,6 +6,21 @@ CREATE TYPE "public"."expense_type" AS ENUM('salary', 'rent', 'utilities', 'mate
 CREATE TYPE "public"."payment_method" AS ENUM('cash', 'bank_transfer', 'mobile_banking', 'card');--> statement-breakpoint
 CREATE TYPE "public"."payment_status" AS ENUM('pending', 'partial', 'completed', 'failed');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('admin', 'staff', 'student');--> statement-breakpoint
+CREATE TABLE "account" (
+	"user_id" integer NOT NULL,
+	"type" varchar(255) NOT NULL,
+	"provider" varchar(255) NOT NULL,
+	"provider_account_id" varchar(255) NOT NULL,
+	"refresh_token" text,
+	"access_token" text,
+	"expires_at" integer,
+	"token_type" varchar(255),
+	"scope" varchar(255),
+	"id_token" text,
+	"session_state" varchar(255),
+	CONSTRAINT "account_provider_provider_account_id_pk" PRIMARY KEY("provider","provider_account_id")
+);
+--> statement-breakpoint
 CREATE TABLE "attendance" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"batch_id" integer NOT NULL,
@@ -160,6 +175,14 @@ CREATE TABLE "payments" (
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
+CREATE TABLE "session" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"session_token" varchar(255) NOT NULL,
+	"user_id" integer NOT NULL,
+	"expires" timestamp with time zone NOT NULL,
+	CONSTRAINT "session_session_token_unique" UNIQUE("session_token")
+);
+--> statement-breakpoint
 CREATE TABLE "staff" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" integer NOT NULL,
@@ -206,6 +229,14 @@ CREATE TABLE "users" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE "verification_tokens" (
+	"identifier" varchar(255) NOT NULL,
+	"token" varchar(255) NOT NULL,
+	"expires" timestamp with time zone NOT NULL,
+	CONSTRAINT "verification_tokens_identifier_token_pk" PRIMARY KEY("identifier","token"),
+	CONSTRAINT "verification_tokens_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
 ALTER TABLE "attendance" ADD CONSTRAINT "attendance_batch_id_batches_id_fk" FOREIGN KEY ("batch_id") REFERENCES "public"."batches"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

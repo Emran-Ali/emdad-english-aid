@@ -1,6 +1,6 @@
 const Welcome = () => {
   return (
-    <div className='relative pt-2 lg:pt-10'>
+    <div className='relative pt-2 lg:pt-10 min-h-screen'>
       <div className='relative z-10 container px-4 md:max-w-90 mx-auto'>
         <div className='relative mb-24 text-center mx-auto'>
           <img
