@@ -1,10 +1,9 @@
-import { IoSearchOutline, IoCloseCircleOutline } from "react-icons/io5";
-import clsx from "clsx";
+import {IoCloseCircleOutline, IoSearchOutline} from 'react-icons/io5';
 
-import React, {useCallback, useState} from "react";
+import {useCallback, useState} from 'react';
 
 const searchStyles = {
-    container:`
+  container: `
     flex justify-between
     relative
     rounded-full
@@ -15,18 +14,18 @@ const searchStyles = {
     focus:outline-blue-500
     max-w-fit`,
 
-    searchWrapper:`
+  searchWrapper: `
     flex
     items-center
     `,
 
-    iconWrapper:`
+  iconWrapper: `
     absolute
     left-2
     pointer-events-none
     `,
 
-    input:`
+  input: `
         bg-transparent
     outline-none
     pl-10 pr-4 py-2
@@ -41,70 +40,62 @@ const searchStyles = {
     duration-200
     `,
 
-    clearButton: (isDisabled) =>
-        `px-2
+  clearButton: (isDisabled) =>
+    `px-2
     flex
     items-center
     justify-center
-    ${isDisabled
+    ${
+      isDisabled
         ? 'opacity-50 cursor-not-allowed'
-        : 'hover:text-gray-700 cursor-pointer'}`
-
+        : 'hover:text-gray-700 cursor-pointer'
+    }`,
 };
 
-const SearchComponent = ({ setGlobalFilter }) => {
+const SearchComponent = ({setGlobalFilter}) => {
+  const [isDisableCancelIcon, setIsDisableCancelIcon] = useState(true);
+  const [searchValue, setSearchValue] = useState('');
 
-    const [isDisableCancelIcon, setIsDisableCancelIcon] = useState(true);
-    const [searchValue, setSearchValue] = useState('');
+  const onChangeGlobalSearch = useCallback((e) => {
+    const value = e.target.value;
+    setGlobalFilter(value);
+    setSearchValue(value);
+    setIsDisableCancelIcon(!value.toString().length);
+  }, []);
 
-    const onChangeGlobalSearch = useCallback(
-        (e) => {
-            const value = e.target.value;
-            setGlobalFilter(value);
-            setSearchValue(value);
-            setIsDisableCancelIcon(!value.toString().length);
-        },
-        []
-    );
+  const handleClear = () => {
+    setIsDisableCancelIcon(true);
+    setGlobalFilter('');
+    setSearchValue('');
+  };
 
-    const handleClear = () => {
-        setIsDisableCancelIcon(true);
-        setGlobalFilter('');
-        setSearchValue('');
-    };
-
-    return (
-        <div className={searchStyles.container}>
-            <div className={searchStyles.searchWrapper}>
-                <div className={searchStyles.iconWrapper}>
-                    <IoSearchOutline
-                        color="#e8a924"
-                        height="20px"
-                        width="20px"
-                    />
-                </div>
-
-                <input
-                    value={searchValue}
-                    placeholder="Search here..."
-                    className={searchStyles.input}
-                    onChange={onChangeGlobalSearch}
-                />
-
-                <button
-                    disabled={isDisableCancelIcon}
-                    onClick={handleClear}
-                    className={searchStyles.clearButton(isDisableCancelIcon)}
-                >
-                    <IoCloseCircleOutline
-                        color={isDisableCancelIcon ? "#9CA3AF" : "#fa0055"}
-                        height="20px"
-                        width="20px"
-                    />
-                </button>
-            </div>
+  return (
+    <div className={searchStyles.container}>
+      <div className={searchStyles.searchWrapper}>
+        <div className={searchStyles.iconWrapper}>
+          <IoSearchOutline color='#e8a924' height='20px' width='20px' />
         </div>
-    );
+
+        <input
+          value={searchValue}
+          placeholder='Search here...'
+          className={searchStyles.input}
+          onChange={onChangeGlobalSearch}
+        />
+
+        <button
+          disabled={isDisableCancelIcon}
+          onClick={handleClear}
+          className={searchStyles.clearButton(isDisableCancelIcon)}>
+          <IoCloseCircleOutline
+            color={isDisableCancelIcon ? '#9CA3AF' : '#fa0055'}
+            height='20px'
+            width='20px'
+          />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default SearchComponent;

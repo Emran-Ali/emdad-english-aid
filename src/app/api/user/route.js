@@ -2,7 +2,7 @@ import {db} from '@/@emran/lib/db';
 import {users} from '@/db/schema/schema';
 import {hashPassword} from '@emran/lib/util/passwordManage';
 import {photoUpload} from '@emran/lib/util/photoUpload';
-import {count, like, or} from 'drizzle-orm';
+import {count, like, or, eq, and} from 'drizzle-orm';
 import {getServerSession} from 'next-auth';
 
 export const POST = async (req) => {
@@ -47,7 +47,9 @@ export const GET = async (req) => {
     const url = new URL(req.url);
     const userId = url.searchParams.get('id');
     const page = parseInt(url.searchParams.get('page')) || 1;
-    const per_page = parseInt(url.searchParams.get('per_page')) || 10;
+    const per_page_param = url.searchParams.get('per_page');
+    const per_page = per_page_param === '-1' ? 1000 : parseInt(per_page_param) || 10;
+    const role = url.searchParams.get('role');
     const search = url.searchParams.get('search') || '';
 
     if (userId) {
@@ -55,7 +57,7 @@ export const GET = async (req) => {
       const user = await db
         .select()
         .from(users)
-        .where(users.id.eq(userId))
+        .where(eq(users.id, Number(userId)))
         .execute();
 
       if (!user.length) {
@@ -83,8 +85,15 @@ export const GET = async (req) => {
         contactNumber: users.contactNumber,
         profilePhoto: users.profilePhoto,
         address: users.address,
+        role: users.role,
       })
       .from(users);
+
+    // Filter by role
+    if (role) {
+      query = query.where(eq(users.role, role));
+      userQuery = userQuery.where(eq(users.role, role));
+    }
 
     // Add search condition if search parameter exists and is not empty
     if (search && search.trim() !== '') {
@@ -93,9 +102,15 @@ export const GET = async (req) => {
         like(users.email, `%${search.trim()}%`),
         like(users.contactNumber, `%${search.trim()}%`),
       );
-
-      query = query.where(searchCondition);
-      userQuery = userQuery.where(searchCondition);
+      
+      if (role) {
+        const combinedCondition = and(eq(users.role, role), searchCondition);
+        query = query.where(combinedCondition);
+        userQuery = userQuery.where(combinedCondition);
+      } else {
+        query = query.where(searchCondition);
+        userQuery = userQuery.where(searchCondition);
+      }
     }
 
     const countResult = await query.execute();

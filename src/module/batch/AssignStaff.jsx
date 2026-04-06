@@ -41,7 +41,7 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
     try {
       setLoading(true);
       const response = await axios.get('/api/user', {
-        params: {role: 'staff'},
+        params: {role: 'staff', per_page: -1},
       });
       setStaffList(response.data?.data || []);
       setError(null);
