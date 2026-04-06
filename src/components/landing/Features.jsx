@@ -61,16 +61,18 @@ const Features = () => {
       });
 
       // STEP 3: Build timeline content with labels
-      cards.slice(0, -1).forEach((card, index) => {
-        const label = `step-${index}`;
-        tl.add(label);
+      // Add initial label for the first card
+      tl.add('card-0');
+      tl.to({}, {duration: 0.5}); // Hold first card
 
+      cards.slice(0, -1).forEach((card, index) => {
         const currentImg = card.querySelector('.feature-image');
         const currentContent = card.querySelector('.feature-content');
         const nextCard = cards[index + 1];
         const nextImg = nextCard.querySelector('.feature-image');
         const nextContent = nextCard.querySelector('.feature-content');
 
+        // Transition starts
         tl.to(
           [currentImg, currentContent],
           {
@@ -79,34 +81,26 @@ const Features = () => {
             duration: 1.5,
             ease: 'power2.inOut',
           },
-          label,
+          '>',
         );
 
         tl.fromTo(
-          nextImg,
-          {y: '60%', opacity: 0},
+          [nextImg, nextContent],
+          {y: (i) => (i === 0 ? '60%' : '40%'), opacity: 0},
           {
             y: 0,
             opacity: 1,
             duration: 1.8,
             ease: 'power2.out',
+            stagger: 0,
           },
-          label,
+          '<',
         );
 
-        tl.fromTo(
-          nextContent,
-          {y: '40%', opacity: 0},
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1.8,
-            ease: 'power2.out',
-          },
-          label,
-        );
-
-        tl.to({}, {duration: 0.5}, '+=0.2');
+        // Add label for the next card state
+        const nextLabel = `card-${index + 1}`;
+        tl.add(nextLabel);
+        tl.to({}, {duration: 0.5}); // Hold next card
       });
 
       // STEP 4: NOW attach ScrollTrigger to the populated timeline
@@ -116,12 +110,13 @@ const Features = () => {
         end: `+=${totalScroll}vh`,
         pin: true,
         pinSpacing: true,
-        scrub: 2,
+        scrub: 1,
+        markers: true,
         anticipatePin: 1,
         animation: tl, // Link timeline to pin
         snap: {
-          snapTo: tl, // NOW safe: tl exists!
-          duration: {min: 0.3, max: 1.5},
+          snapTo: 'labels', // Snaps to labels we added
+          duration: {min: 0.3, max: 0.8},
           ease: 'power2.inOut',
         },
       });

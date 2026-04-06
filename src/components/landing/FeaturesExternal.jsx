@@ -21,18 +21,18 @@ const FeaturesExternal = () => {
     gsap.set(leftCard, {x: '-120%', opacity: 0});
     gsap.set(rightCard, {x: '120%', opacity: 0});
 
-    // ScrollTrigger: scrub=true for perfect reverse on scroll up
+    // ScrollTrigger: play on enter
     gsap.to([leftCard, rightCard], {
       x: 0,
       opacity: 1,
-      duration: 1,
-      ease: 'power2.out',
+      duration: 2,
+      stagger: 0.2,
+      ease: 'power3.out',
       scrollTrigger: {
-        trigger: container,
+        trigger: '.external',
         start: 'top 80%', // Start when top of container hits 80% of viewport
-        end: 'bottom 20%', // End when bottom hits 20% of viewport
-        scrub: true, // Ties animation directly to scroll (reverses automatically)
-        markers: false, // Set true to debug positions
+        markers: false,
+        toggleActions: 'play none none reverse', // Play on enter, reverse on leave back
       },
     });
 
@@ -42,7 +42,7 @@ const FeaturesExternal = () => {
   });
 
   return (
-    <div ref={containerRef} className='flex flex-wrap -m-5'>
+    <div ref={containerRef} className='external flex flex-wrap -m-5'>
       <div className='w-full md:w-1/2 p-5 left-card'>
         {' '}
         {/* Add left-card class */}
