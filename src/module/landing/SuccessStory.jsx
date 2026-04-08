@@ -99,7 +99,7 @@ const SuccessStory = () => {
               <div className='h-full'>
                 <div className='card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg'>
                   <Image
-                    src={student.image}
+                    src={student.image.startsWith('/') ? student.image : `/${student.image}`}
                     alt={student.name}
                     width={208}
                     height={208}

@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {FaUsersCog} from 'react-icons/fa';
@@ -14,7 +15,7 @@ const Menu = () => {
     <div className='sticky top-0 bg-cyan-900 hover:bg-cyan-800 rounded-b-xl z-[100]'>
       <div className='align-middle flex justify-between'>
         <Link href='/' className='inline-flex items-center px-4'>
-          <img src='assets/image/logo.png' height={48} width={48} />
+          <Image src='/assets/image/logo.png' height={48} width={48} alt="Logo" />
           <div className='hidden md:block'>
             <span className='bg-clip-text font-bold mx-4 text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-white'>
               Emdad's English Aid

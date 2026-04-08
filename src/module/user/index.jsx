@@ -101,7 +101,7 @@ export default function User() {
         enableRowNumbers={true}
         filterConfig={filterConfig}
       />
-      <Modal isOpen={modal} onClose={onClose} title={'Add New User'}>
+      <Modal isOpen={modal} onClose={onClose} title={'Add New User'} size="large">
         <CreateUser />
       </Modal>
     </div>

@@ -24,9 +24,9 @@ const Modal = ({isOpen, onClose, children, title, size}) => {
           &#x2715; {/* Close button */}
         </button>
         {title && (
-          <div className='text-xl font-bold text-cyan-700'>{title}</div>
+          <div className='text-xl font-bold text-cyan-700 mb-4 pr-6 border-b pb-2'>{title}</div>
         )}
-        <div className='text-black w-full'>{children}</div>
+        <div className='text-black w-full overflow-y-auto max-h-[80vh]'>{children}</div>
       </div>
     </div>
   );

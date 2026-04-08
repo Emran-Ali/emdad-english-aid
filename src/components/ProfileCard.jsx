@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   FaFacebook,
   FaGoogle,
@@ -28,10 +29,12 @@ const ProfileCard = ({profile}) => {
   return (
     <div className="w-full h-full">
       <div className="card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg">
-        <img
+        <Image
           alt={profile.name}
-          src={profile.image}
+          src={profile.image.startsWith('/') ? profile.image : `/${profile.image}`}
           className="shadow-lg rounded-full mx-auto h-52 w-52 object-cover"
+          width={208}
+          height={208}
         />
         <div className="pt-6 text-center">
           <h5 className="text-xl text-yellow-300 font-bold">{profile.name}</h5>

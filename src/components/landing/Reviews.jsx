@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const Reviews = () => {
   return (
     <section className="relative py-24 overflow-hidden">
@@ -18,9 +20,12 @@ const Reviews = () => {
                 <div className="px-6 py-8 border border-gray-800 rounded-3xl">
                   <div className="flex flex-wrap items-center -m-3 mb-3">
                     <div className="w-auto p-3">
-                      <img
+                      <Image
                         src="/assets/template-images/cards/avatar2.png"
-                        alt=""
+                        alt="Avatar"
+                        width={48}
+                        height={48}
+                        className="rounded-full"
                       />
                     </div>
                     <div className="w-auto p-3">
@@ -81,9 +86,12 @@ const Reviews = () => {
                 <div className="px-6 py-8 border border-gray-800 rounded-3xl">
                   <div className="flex flex-wrap items-center -m-3 mb-3">
                     <div className="w-auto p-3">
-                      <img
+                      <Image
                         src="/assets/template-images/cards/avatar3.png"
-                        alt=""
+                        alt="Avatar"
+                        width={48}
+                        height={48}
+                        className="rounded-full"
                       />
                     </div>
                     <div className="w-auto p-3">
@@ -144,9 +152,12 @@ const Reviews = () => {
                 <div className="px-6 py-8 border border-gray-800 rounded-3xl">
                   <div className="flex flex-wrap items-center -m-3 mb-3">
                     <div className="w-auto p-3">
-                      <img
+                      <Image
                         src="/assets/template-images/cards/avatar4.png"
-                        alt=""
+                        alt="Avatar"
+                        width={48}
+                        height={48}
+                        className="rounded-full"
                       />
                     </div>
                     <div className="w-auto p-3">

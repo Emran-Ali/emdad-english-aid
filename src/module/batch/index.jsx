@@ -12,7 +12,7 @@ import {useBatchService} from '@service/BatchService';
 import {useMemo, useState} from 'react';
 import {BiSolidShow} from 'react-icons/bi';
 import {BiCalendar, BiEdit, BiTrash} from 'react-icons/bi';
-import {SiPeoplesoft} from 'react-icons/si';
+import {FaUsers} from 'react-icons/fa';
 
 export default function App() {
   const [modal, setModal] = useState(false);
@@ -135,7 +135,7 @@ export default function App() {
               },
             },
             {
-              icon: SiPeoplesoft,
+              icon: FaUsers,
               label: 'Assign Staff',
               onClick: () => {
                 setSelectedBatch(data);

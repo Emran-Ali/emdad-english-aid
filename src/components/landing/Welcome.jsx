@@ -1,17 +1,23 @@
+import Image from 'next/image';
+
 const Welcome = () => {
   return (
     <div className='relative pt-2 lg:pt-10 min-h-screen'>
       <div className='relative z-10 container px-4 md:max-w-90 mx-auto'>
         <div className='relative mb-24 text-center mx-auto'>
-          <img
+          <Image
             className='absolute top-44 -left-36 hidden md:block'
             src='/assets/template-images/headers/star2.svg'
             alt=''
+            width={100}
+            height={100}
           />
-          <img
+          <Image
             className='absolute top-10 -right-36 hidden md:block'
             src='/assets/template-images/headers/star2.svg'
             alt=''
+            width={100}
+            height={100}
           />
           <h1 className='my-4 text-2xl lg:text-5xl  tracking-tighter text-white opacity-75 font-bold leading-tight text-center md:text-left'>
             Welcome To <br />
@@ -29,10 +35,12 @@ const Welcome = () => {
           </a>
         </div>
       </div>
-      <img
+      <Image
         className='absolute bottom-0 right-0 -z-10 pointer-events-none'
         src='/assets/template-images/headers/lines2.svg'
         alt=''
+        width={500}
+        height={500}
       />
     </div>
   );
