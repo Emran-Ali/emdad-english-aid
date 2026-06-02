@@ -228,7 +228,7 @@ const DataTable = ({
 
   // Pagination component
   const Pagination = () => (
-    <div className='flex items-center justify-between px-4 py-4 bg-cyan-950/50 border-t border-cyan-800/50 sm:px-6'>
+    <div className='flex items-center justify-between px-4 py-4 bg-cyan-950/50 border-t rounded-xl border-cyan-800/50 sm:px-6 mt-2'>
       <div className='flex items-center'>
         <span className='text-sm text-cyan-300'>
           Showing
@@ -271,8 +271,8 @@ const DataTable = ({
   );
 
   return (
-    <div className='flex flex-col'>
-      <div className='mt-4 bg-cyan-950/40 backdrop-blur-sm rounded-2xl shadow-2xl border border-cyan-800/50 overflow-hidden'>
+    <div className='flex flex-col mb-6'>
+      <div className='mt-2 bg-cyan-950/40 backdrop-blur-sm rounded-2xl shadow-2xl border border-cyan-800/50 overflow-hidden'>
         <div className='p-6'>
           {showTopBar && (
             <FilterBar

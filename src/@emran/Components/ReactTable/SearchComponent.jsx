@@ -7,12 +7,13 @@ const searchStyles = {
     flex justify-between
     relative
     rounded-full
-    bg-gray-100
+    bg-cyan-900/50
     h-10
-    border-1
-    border-orange-400
-    focus:outline-blue-500
-    max-w-fit`,
+    border
+    border-cyan-700/50
+    focus-within:border-cyan-500
+    max-w-fit
+    transition-all`,
 
   searchWrapper: `
     flex
@@ -21,35 +22,35 @@ const searchStyles = {
 
   iconWrapper: `
     absolute
-    left-2
+    left-3
     pointer-events-none
     `,
 
   input: `
-        bg-transparent
+    bg-transparent
     outline-none
     pl-10 pr-4 py-2
     w-full
-    text-gray-700
-    placeholder-gray-500
+    text-cyan-100
+    placeholder-cyan-600/60
     xl:w-[45ch]
     lg:w-[35ch]
     md:w-[30ch]
-    focus:ring-none
+    focus:ring-0
     transition-all
     duration-200
     `,
 
   clearButton: (isDisabled) =>
-    `px-2
+    `px-3
     flex
     items-center
     justify-center
     ${
       isDisabled
-        ? 'opacity-50 cursor-not-allowed'
-        : 'hover:text-gray-700 cursor-pointer'
-    }`,
+        ? 'opacity-0 cursor-default'
+        : 'text-red-400 hover:text-red-500 cursor-pointer'
+    } transition-all`,
 };
 
 const SearchComponent = ({setGlobalFilter}) => {
@@ -73,7 +74,7 @@ const SearchComponent = ({setGlobalFilter}) => {
     <div className={searchStyles.container}>
       <div className={searchStyles.searchWrapper}>
         <div className={searchStyles.iconWrapper}>
-          <IoSearchOutline color='#e8a924' height='20px' width='20px' />
+          <IoSearchOutline className='text-cyan-500' size={18} />
         </div>
 
         <input

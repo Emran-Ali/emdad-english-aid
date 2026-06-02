@@ -40,23 +40,23 @@ const FilterBar = ({
   };
 
   return (
-    <div className='bg-white shadow rounded-lg p-4'>
-      <div className='flex justify-between items-center mb-4'>
+    <div className='bg-cyan-950/40 backdrop-blur-sm border border-cyan-800/50 rounded-xl p-4 mb-2'>
+      <div className='flex justify-between items-center'>
         {showSearchComponent && (
           <SearchComponent setGlobalFilter={setGlobalFilter} />
         )}
         {filterConfig.length > 0 && (
           <button
-            className='flex items-center gap-2 text-gray-700 hover:text-black'
+            className='flex items-center gap-2 text-cyan-400 hover:text-white transition-colors'
             onClick={() => setOpen(!open)}>
             <IoFilter size={20} />
-            <span className='text-sm'>Filter</span>
+            <span className='text-sm font-medium'>Filter</span>
           </button>
         )}
       </div>
       {filterConfig.length > 0 && (
         <div
-          className={`border-t border-gray-300 pt-4 ${
+          className={`border-t border-cyan-800/50 mt-4 pt-4 ${
             open ? 'block' : 'hidden'
           }`}>
           <FilterField

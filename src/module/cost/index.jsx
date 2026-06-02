@@ -106,59 +106,60 @@ export default function CostModule() {
         />
 
       <Modal isOpen={modal} onClose={() => setModal(false)} title="Add New Expense">
-        <form onSubmit={handleSubmit} className="space-y-4 p-4 text-white">
+        <form onSubmit={handleSubmit} className="space-y-4 p-2">
           <div>
-            <label className="block text-sm font-medium mb-1">Expense Type</label>
+            <label className="block text-sm font-medium mb-1 text-cyan-300">Expense Type</label>
             <select
-              className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+              className="w-full bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg p-2 focus:outline-none focus:border-cyan-500 transition-colors"
               value={formData.expenseType}
               onChange={(e) => setFormData({...formData, expenseType: e.target.value})}
             >
-              <option value="salary">Salary</option>
-              <option value="rent">Rent</option>
-              <option value="utilities">Utilities</option>
-              <option value="materials">Materials</option>
-              <option value="other">Other</option>
+              <option value="salary" className="bg-cyan-950">Salary</option>
+              <option value="rent" className="bg-cyan-950">Rent</option>
+              <option value="utilities" className="bg-cyan-950">Utilities</option>
+              <option value="materials" className="bg-cyan-950">Materials</option>
+              <option value="other" className="bg-cyan-950">Other</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Related Batch (Optional)</label>
+            <label className="block text-sm font-medium mb-1 text-cyan-300">Related Batch (Optional)</label>
             <select
-              className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+              className="w-full bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg p-2 focus:outline-none focus:border-cyan-500 transition-colors"
               value={formData.batchId}
               onChange={(e) => setFormData({...formData, batchId: e.target.value})}
             >
-              <option value="">None</option>
+              <option value="" className="bg-cyan-950">None</option>
               {batches.map(b => (
-                <option key={b.id} value={b.id}>{b.title}</option>
+                <option key={b.id} value={b.id} className="bg-cyan-950">{b.title}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1 text-cyan-300">Description</label>
             <textarea
-              className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+              className="w-full bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg p-2 h-20 focus:outline-none focus:border-cyan-500 transition-colors placeholder:text-cyan-600/50"
               required
+              placeholder="Enter reason for expense"
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Amount</label>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">Amount</label>
               <input
                 type="number"
-                className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg p-2 focus:outline-none focus:border-cyan-500 transition-colors"
                 required
                 value={formData.amount}
                 onChange={(e) => setFormData({...formData, amount: e.target.value})}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Date</label>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">Date</label>
               <input
                 type="date"
-                className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg p-2 focus:outline-none focus:border-cyan-500 transition-colors"
                 required
                 value={formData.expenseDate}
                 onChange={(e) => setFormData({...formData, expenseDate: e.target.value})}
@@ -167,7 +168,7 @@ export default function CostModule() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-cyan-600 hover:bg-cyan-700 rounded-xl font-bold transition-all mt-4"
+            className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 rounded-xl font-bold transition-all mt-4 text-white shadow-lg shadow-cyan-900/20"
           >
             Submit Expense
           </button>
