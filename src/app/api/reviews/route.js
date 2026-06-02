@@ -35,7 +35,7 @@ export const POST = async (req) => {
       reviewerHandle: body.reviewerHandle || '',
       content: body.content,
       rating: body.rating || 5,
-      isShown: false, // Default to false, admin must approve
+      isShown: (session.user.role === 'admin' || session.user.role === 'staff') ? (body.isShown ?? true) : false,
     };
 
     const result = await db.insert(reviews).values(payload).returning();

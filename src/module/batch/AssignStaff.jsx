@@ -94,16 +94,16 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
 
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div>
-            <label className='block text-sm font-medium mb-2'>
+            <label className='block text-sm font-medium mb-2 text-cyan-300'>
               Staff Member
             </label>
             <select
               {...register('staffId')}
-              className='w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-cyan-700'
+              className='w-full px-3 py-2 bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg focus:outline-none focus:border-cyan-500 transition-colors'
               disabled={loading}>
-              <option value=''>Select a staff member</option>
+              <option value='' className='bg-cyan-950'>Select a staff member</option>
               {staffList.map((staff) => (
-                <option key={staff.id} value={staff.id}>
+                <option key={staff.id} value={staff.id} className='bg-cyan-950'>
                   {staff.name} ({staff.email})
                 </option>
               ))}
@@ -116,14 +116,14 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
           </div>
 
           <div>
-            <label className='block text-sm font-medium mb-2'>Role</label>
+            <label className='block text-sm font-medium mb-2 text-cyan-300'>Role</label>
             <select
               {...register('role')}
-              className='w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-cyan-700'
+              className='w-full px-3 py-2 bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg focus:outline-none focus:border-cyan-500 transition-colors'
               disabled={loading}>
-              <option value='instructor'>Instructor</option>
-              <option value='coordinator'>Coordinator</option>
-              <option value='assistant'>Assistant</option>
+              <option value='instructor' className='bg-cyan-950'>Instructor</option>
+              <option value='coordinator' className='bg-cyan-950'>Coordinator</option>
+              <option value='assistant' className='bg-cyan-950'>Assistant</option>
             </select>
             {formErrors.role && (
               <p className='text-red-500 text-sm mt-1'>
@@ -137,13 +137,13 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
               type='button'
               onClick={handleClose}
               disabled={loading}
-              className='flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded font-medium hover:bg-gray-400 disabled:opacity-50'>
+              className='flex-1 px-4 py-2 bg-gray-600/20 text-gray-400 border border-gray-600/50 rounded-lg hover:bg-gray-600 hover:text-white transition-all duration-200'>
               Cancel
             </button>
             <button
               type='submit'
               disabled={loading}
-              className='flex-1 px-4 py-2 bg-cyan-700 text-white rounded font-medium hover:bg-cyan-800 disabled:opacity-50'>
+              className='flex-1 px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-500 font-bold transition-all shadow-lg shadow-cyan-900/20'>
               {loading ? 'Assigning...' : 'Assign Staff'}
             </button>
           </div>

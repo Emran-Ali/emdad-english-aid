@@ -3,9 +3,12 @@ import DataTable from '@emran/Components/ReactTable/DataTable';
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo } from 'react';
 import axios from 'axios';
-import { FaCheckCircle, FaHourglassHalf, FaTimesCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaHourglassHalf, FaTimesCircle, FaPlus } from 'react-icons/fa';
+import { useState } from 'react';
+import AddBooking from './AddBooking';
 
 export default function BookingModule() {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const {
     onFetchData,
     data: BookingData,
@@ -88,14 +91,25 @@ export default function BookingModule() {
         },
       },
     ],
-    [mutate],
+    [handleUpdateStatus],
   );
 
   return (
     <div className='w-full'>
-      <div className='flex justify-between text-white mb-6'>
+      <div className='flex justify-between items-center text-white mb-6'>
         <div className='text-3xl font-bold'>Batch Bookings</div>
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className='flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-900/20'
+        >
+          <FaPlus /> Add New Booking
+        </button>
       </div>
+      <AddBooking
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        mutate={mutate}
+      />
         <DataTable
           columns={columns}
           tableData={BookingData}

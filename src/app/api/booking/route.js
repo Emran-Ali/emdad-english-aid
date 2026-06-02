@@ -23,9 +23,12 @@ export const POST = async (req) => {
     const body = await req.json();
     const {batchId, studentName, studentEmail, contactNumber} = body;
 
+    const session = await getServerSession(authOptions);
+    const isAdminOrStaff = session && (session.user.role === 'admin' || session.user.role === 'staff');
+
     // Check if batch is accepting students
     const batch = await db.select().from(batches).where(eq(batches.id, batchId)).limit(1).execute();
-    if (!batch[0] || !batch[0].isAcceptingStudents) {
+    if (!isAdminOrStaff && (!batch[0] || !batch[0].isAcceptingStudents)) {
       return new Response(JSON.stringify({message: 'Batch is not accepting students'}), {status: 400});
     }
 
@@ -34,7 +37,7 @@ export const POST = async (req) => {
       studentName,
       studentEmail,
       contactNumber,
-      status: 'pending'
+      status: isAdminOrStaff ? (body.status || 'confirmed') : 'pending'
     }).returning();
 
     return new Response(JSON.stringify({data: result[0]}), {status: 201});

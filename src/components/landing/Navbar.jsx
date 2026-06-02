@@ -5,8 +5,10 @@ import {usePathname} from 'next/navigation';
 import {useState} from 'react';
 import {GiCrossedBones} from 'react-icons/gi';
 import {MdOutlineMenuOpen} from 'react-icons/md';
+import { useSession } from 'next-auth/react';
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const handleMobileNav = () => {
     setMobileNavOpen(!mobileNavOpen);
@@ -73,11 +75,19 @@ const Navbar = () => {
               </div>
               <div className='w-auto hidden lg:block'>
                 <div className='inline-block'>
-                  <Link
-                    className='inline-block px-8 py-4 text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
-                    href='/signin'>
-                    Login
-                  </Link>
+                  {session ? (
+                    <Link
+                      className='inline-block px-8 py-4 text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
+                      href='/dashboard'>
+                      Account
+                    </Link>
+                  ) : (
+                    <Link
+                      className='inline-block px-8 py-4 text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
+                      href='/signin'>
+                      Login
+                    </Link>
+                  )}
                 </div>
               </div>
               <div className='w-auto lg:hidden'>
@@ -140,11 +150,19 @@ const Navbar = () => {
               </ul>
             </div>
             <div className='flex flex-col justify-end w-full pb-8'>
-              <Link
-                className='inline-block px-8 py-4 text-center text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
-                href='login'>
-                Login
-              </Link>
+              {session ? (
+                <Link
+                  className='inline-block px-8 py-4 text-center text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
+                  href='/dashboard'>
+                  Account
+                </Link>
+              ) : (
+                <Link
+                  className='inline-block px-8 py-4 text-center text-white hover:text-black tracking-tighter hover:bg-lime-400 border-2 border-white focus:border-lime-400 focus:border-opacity-40 hover:border-lime-400 focus:ring-4 focus:ring-lime-400 focus:ring-opacity-40 rounded-full transition duration-300'
+                  href='/signin'>
+                  Login
+                </Link>
+              )}
             </div>
           </div>
         </nav>

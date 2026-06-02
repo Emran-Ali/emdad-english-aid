@@ -5,12 +5,13 @@ import {ApiProvider} from '@emran/Context/APIContext';
 import '.././globals.css';
 import {useSession} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 
 export default function RootLayout({children}) {
 
   const router = useRouter();
   const {data: session, status} = useSession();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -36,9 +37,9 @@ export default function RootLayout({children}) {
       className="leading-normal tracking-normal bg-cover bg-fixed min-h-screen bg-gradient-radial-dark flex flex-col"
     >
       <ApiProvider>
-        <Menu />
+        <Menu onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
         <div className="flex flex-1 overflow-hidden relative">
-          <Sidebar />
+          <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
           <div className="flex-1 lg:ml-64 transition-all duration-300 overflow-y-auto">
             <div className="max-w-[1444px] mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 lg:py-10">
               {children}

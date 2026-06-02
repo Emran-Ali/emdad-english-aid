@@ -4,9 +4,11 @@ import { processCellLimitedString } from '@emran/Components/ReactTable/tableHelp
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo, useState } from 'react';
 import axios from 'axios';
-import { FaCheck, FaTimes, FaStar } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaStar, FaPlus } from 'react-icons/fa';
+import AddReview from './AddReview';
 
 export default function ReviewsModule() {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const {
     onFetchData,
     data: ReviewsData,
@@ -72,14 +74,25 @@ export default function ReviewsModule() {
         },
       },
     ],
-    [mutate],
+    [handleToggleShow],
   );
 
   return (
     <div className='w-full'>
-      <div className='flex justify-between text-white mb-6'>
+      <div className='flex justify-between items-center text-white mb-6'>
         <div className='text-3xl font-bold'>Student Reviews</div>
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className='flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-900/20'
+        >
+          <FaPlus /> Add New Review
+        </button>
       </div>
+      <AddReview
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        mutate={mutate}
+      />
         <DataTable
           columns={columns}
           tableData={ReviewsData}

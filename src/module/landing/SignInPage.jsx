@@ -3,8 +3,8 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
-import {signIn} from 'next-auth/react';
-import {useState} from 'react';
+import {signIn, useSession} from 'next-auth/react';
+import {useState, useEffect} from 'react';
 
 const schema = yup
   .object({
@@ -17,8 +17,15 @@ const schema = yup
 
 const SignInPage = () => {
   const router = useRouter();
+  const { status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/dashboard');
+    }
+  }, [status, router]);
 
   const {
     register,

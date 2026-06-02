@@ -19,8 +19,7 @@ import {
   FaThLarge
 } from 'react-icons/fa';
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const pathName = usePathname();
   const { data: session } = useSession();
   const role = session?.user?.role || 'student';
@@ -88,16 +87,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Toggle Button */}
-      <div className="lg:hidden fixed top-4 left-4 z-[110]">
-        <button 
-          onClick={toggleSidebar}
-          className="p-2 bg-cyan-700 text-white rounded-lg shadow-lg hover:bg-cyan-800 transition-colors"
-        >
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
-      </div>
-
       {/* Backdrop for mobile */}
       {isOpen && (
         <div 

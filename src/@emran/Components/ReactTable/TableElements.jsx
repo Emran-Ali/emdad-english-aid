@@ -1,7 +1,7 @@
 import {IoRefreshOutline} from 'react-icons/io5';
 
 export const NoDataFound = () => (
-  <div className='flex flex-col items-center justify-center p-8 min-h-[80vh]'>
+  <div className='flex flex-col items-center justify-center p-8 min-h-[50vh]'>
     <div className='text-gray-400 text-6xl mb-4'>📊</div>
     <p className='text-gray-500'>No data found</p>
   </div>

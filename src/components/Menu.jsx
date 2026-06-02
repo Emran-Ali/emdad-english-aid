@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import {FaUserCog, FaUserEdit, FaSignOutAlt} from 'react-icons/fa';
+import {FaUserCog, FaUserEdit, FaSignOutAlt, FaBars} from 'react-icons/fa';
 import { signOut } from 'next-auth/react';
 import { useState, useRef, useEffect } from 'react';
 
-const Menu = () => {
+const Menu = ({ onToggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -59,6 +59,14 @@ const Menu = () => {
                 </button>
               </div>
             )}
+          </li>
+          <li className="lg:hidden">
+            <button
+              onClick={onToggleSidebar}
+              className='p-2 md:p-3 text-cyan-400 hover:text-white transition-colors'
+            >
+              <FaBars className='font-bold text-xl md:text-3xl ' />
+            </button>
           </li>
         </ul>
       </div>
