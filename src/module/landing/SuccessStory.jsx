@@ -4,50 +4,23 @@ import Image from 'next/image';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 const SuccessStory = () => {
-  const students = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      university: 'DU', // Dhaka University
-      department: 'CSE',
-      session: '2018-19',
-      image: 'assets/image/gaffer.jpg',
-    },
-    {
-      id: 2,
-      name: 'Rakib Hassan',
-      university: 'BUET', // Bangladesh University of Engineering and Technology
-      department: 'EEE',
-      session: '2019-20',
-      image: 'assets/image/gaffer.jpg',
-    },
-    {
-      id: 3,
-      name: 'Nusrat Jahan',
-      university: 'JU', // Jahangirnagar University
-      department: 'CSE',
-      session: '2018-19',
-      image: 'assets/image/gaffer.jpg',
-    },
-    {
-      id: 4,
-      name: 'Karim Ahmed',
-      university: 'RU', // Rajshahi University
-      department: 'ENG',
-      session: '2020-21',
-      image: 'assets/image/gaffer.jpg',
-    },
-    {
-      id: 5,
-      name: 'Fatima Begum',
-      university: 'CU', // Chittagong University
-      department: 'BBA',
-      session: '2019-20',
-      image: 'assets/image/gaffer.jpg',
-    },
-  ];
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    const fetchSuccessStories = async () => {
+      try {
+        const response = await axios.get('/api/success-story?onlyShown=true');
+        setStudents(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch success stories:', error);
+      }
+    };
+    fetchSuccessStories();
+  }, []);
 
   const sliderSettings = {
     dots: true,
@@ -98,17 +71,17 @@ const SuccessStory = () => {
             <div key={student.id} className='px-2'>
               <div className='h-full'>
                 <div className='card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg'>
-                  <Image
-                    src={student.image.startsWith('/') ? student.image : `/${student.image}`}
-                    alt={student.name}
-                    width={208}
-                    height={208}
-                    className='shadow-lg rounded-full mx-auto h-52 w-52 object-cover'
-                  />
-                  <div className='pt-6 text-center'>
-                    <h5 className='text-xl text-yellow-300 font-bold'>
-                      {student.name}
-                    </h5>
+                    <Image
+                      src={student.image?.startsWith('/') ? student.image : `/${student.image || 'assets/image/gaffer.jpg'}`}
+                      alt={student.studentName}
+                      width={208}
+                      height={208}
+                      className='shadow-lg rounded-full mx-auto h-52 w-52 object-cover'
+                    />
+                    <div className='pt-6 text-center'>
+                      <h5 className='text-xl text-yellow-300 font-bold'>
+                        {student.studentName}
+                      </h5>
                     <p className='mt-1 text-sm text-white uppercase font-semibold'>
                       {student.university}
                     </p>

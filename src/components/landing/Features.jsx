@@ -111,7 +111,6 @@ const Features = () => {
         pin: true,
         pinSpacing: true,
         scrub: 1,
-        markers: true,
         anticipatePin: 1,
         animation: tl, // Link timeline to pin
         snap: {

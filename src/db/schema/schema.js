@@ -185,6 +185,7 @@ export const batches = pgTable(
     batchTime: time('batch_time').notNull(),
     fees: decimal('fees', {precision: 10, scale: 2}).notNull(),
     isActive: boolean('is_active').default(true).notNull(),
+    isAcceptingStudents: boolean('is_accepting_students').default(false).notNull(),
     ...timestamps,
   },
   (table) => {
@@ -407,6 +408,56 @@ export const expenses = pgTable(
     };
   },
 );
+
+// Reviews table
+export const reviews = pgTable('reviews', {
+  id: serial('id').primaryKey(),
+  studentId: integer('student_id').references(() => students.id, {
+    onDelete: 'cascade',
+  }),
+  reviewerName: varchar('reviewer_name', {length: 255}).notNull(),
+  reviewerHandle: varchar('reviewer_handle', {length: 255}),
+  content: text('content').notNull(),
+  rating: integer('rating').default(5),
+  isShown: boolean('is_shown').default(false).notNull(),
+  ...timestamps,
+});
+
+// Success Stories table
+export const successStories = pgTable('success_stories', {
+  id: serial('id').primaryKey(),
+  studentName: varchar('student_name', {length: 255}).notNull(),
+  university: varchar('university', {length: 255}).notNull(),
+  department: varchar('department', {length: 255}).notNull(),
+  session: varchar('session', {length: 50}).notNull(),
+  image: varchar('image', {length: 255}),
+  isShown: boolean('is_shown').default(false).notNull(),
+  ...timestamps,
+});
+
+// Team table
+export const team = pgTable('team', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', {length: 255}).notNull(),
+  role: varchar('role', {length: 255}).notNull(),
+  image: varchar('image', {length: 255}),
+  bio: text('bio'),
+  order: integer('order').default(0),
+  ...timestamps,
+});
+
+// Bookings table (for landing page seat booking)
+export const bookings = pgTable('bookings', {
+  id: serial('id').primaryKey(),
+  batchId: integer('batch_id')
+    .references(() => batches.id, {onDelete: 'cascade'})
+    .notNull(),
+  studentName: varchar('student_name', {length: 255}).notNull(),
+  studentEmail: varchar('student_email', {length: 255}).notNull(),
+  contactNumber: varchar('contact_number', {length: 20}).notNull(),
+  status: varchar('status', {length: 50}).default('pending').notNull(), // pending, confirmed, cancelled
+  ...timestamps,
+});
 
 // Notifications (for payment reminders, exam schedules, etc.)
 export const notifications = pgTable(
