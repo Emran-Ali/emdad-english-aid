@@ -104,12 +104,12 @@ export default function CreateUser() {
                 </div>
 
             {/* Address */}
-                <div className="col-span-2">
+                <div>
                 <label className="block text-gray-700">Address</label>
                 <textarea
                     {...register('address')}
                     placeholder="Enter your address"
-                    className="mt-1 p-2 border rounded w-full h-10"
+                    className="mt-1 p-2 border rounded w-full"
                 />
                 {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
                 </div>

@@ -41,7 +41,7 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
     try {
       setLoading(true);
       const response = await axios.get('/api/user', {
-        params: {role: 'staff'},
+        params: {role: 'staff', per_page: -1},
       });
       setStaffList(response.data?.data || []);
       setError(null);
@@ -84,10 +84,8 @@ export default function AssignStaff({batchId, isOpen, onClose, onSuccess}) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
-      <div className='w-full max-w-md'>
-        <h2 className='text-2xl font-bold mb-4'>Assign Staff to Batch</h2>
-
+    <Modal isOpen={isOpen} onClose={handleClose} title="Assign Staff to Batch" size="medium">
+      <div className='w-full'>
         {error && (
           <div className='mb-4 p-3 bg-red-100 border border-red-400 rounded text-red-700'>
             {error}

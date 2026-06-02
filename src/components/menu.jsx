@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {FaUsersCog} from 'react-icons/fa';
@@ -11,10 +12,10 @@ const Menu = () => {
     'p-1 bg-gradient-to-r from-green-400 via-pink-500 to-white text-black rounded-full bg-[length:200%_200%] animate-gradient-x';
 
   return (
-    <div className='sticky top-0 bg-cyan-900 hover:bg-cyan-800 rounded-b-xl'>
+    <div className='sticky top-0 bg-cyan-900 hover:bg-cyan-800 rounded-b-xl z-[100]'>
       <div className='align-middle flex justify-between'>
         <Link href='/' className='inline-flex items-center px-4'>
-          <img src='assets/image/logo.png' height={48} width={48} />
+          <Image src='/assets/image/logo.png' height={48} width={48} alt="Logo" />
           <div className='hidden md:block'>
             <span className='bg-clip-text font-bold mx-4 text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-white'>
               Emdad's English Aid
@@ -43,6 +44,18 @@ const Menu = () => {
                     : 'p-2 md:p-3'
                 }>
                 <SiGoogleclassroom className='font-bold text-xl md:text-3xl' />
+              </div>
+            </Link>
+          </li>
+          <li className={pathName === '/student' ? active : ''}>
+            <Link href='/student'>
+              <div
+                className={
+                  pathName === '/student'
+                    ? 'p-2 md:p-3 rounded-full bg-lime-400'
+                    : 'p-2 md:p-3'
+                }>
+                <FaUsersCog className='font-bold text-xl md:text-3xl rotate-180' />
               </div>
             </Link>
           </li>

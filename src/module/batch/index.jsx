@@ -11,7 +11,8 @@ import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import {useBatchService} from '@service/BatchService';
 import {useMemo, useState} from 'react';
 import {BiSolidShow} from 'react-icons/bi';
-import {FaCalendar, FaEdit, FaPeople, FaTrash} from 'react-icons/fa';
+import {BiCalendar, BiEdit, BiTrash} from 'react-icons/bi';
+import {FaUsers} from 'react-icons/fa';
 
 export default function App() {
   const [modal, setModal] = useState(false);
@@ -118,7 +119,7 @@ export default function App() {
               },
             },
             {
-              icon: FaEdit,
+              icon: BiEdit,
               label: 'Edit',
               onClick: () => {
                 setSelectedBatch(data);
@@ -126,7 +127,7 @@ export default function App() {
               },
             },
             {
-              icon: FaCalendar,
+              icon: BiCalendar,
               label: 'Schedule',
               onClick: () => {
                 setSelectedBatch(data);
@@ -134,7 +135,7 @@ export default function App() {
               },
             },
             {
-              icon: FaPeople,
+              icon: FaUsers,
               label: 'Assign Staff',
               onClick: () => {
                 setSelectedBatch(data);
@@ -142,7 +143,7 @@ export default function App() {
               },
             },
             {
-              icon: FaTrash,
+              icon: BiTrash,
               label: 'Delete',
               onClick: () => handleDeleteBatch(data.id),
             },
@@ -236,6 +237,7 @@ export default function App() {
         onSuccess={mutate}
       />
       <AssignStaff
+        size={'small'}
         batchId={selectedBatch?.id}
         isOpen={assignStaffModal}
         onClose={onAssignStaffClose}

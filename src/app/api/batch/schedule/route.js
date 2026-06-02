@@ -1,6 +1,6 @@
 import {batchSchedules} from '@/db/schema/schema';
 import {db} from '@emran/lib/db';
-import {eq} from 'drizzle-orm';
+import {and, eq} from 'drizzle-orm';
 import * as yup from 'yup';
 
 const batchScheduleSchema = yup.object({
@@ -110,6 +110,25 @@ export const POST = async (req) => {
       );
     }
 
+    // Check for existing schedule on this day for the same batch
+    const existing = await db
+      .select()
+      .from(batchSchedules)
+      .where(
+        and(
+          eq(batchSchedules.batchId, data.batchId),
+          eq(batchSchedules.dayOfWeek, data.dayOfWeek)
+        )
+      )
+      .execute();
+
+    if (existing.length > 0) {
+      return new Response(
+        JSON.stringify({message: `Schedule already exists for ${data.dayOfWeek}`}),
+        {status: 409, headers: {'Content-Type': 'application/json'}},
+      );
+    }
+
     const payload = {
       batchId: data.batchId,
       dayOfWeek: data.dayOfWeek,
@@ -175,59 +194,59 @@ export const PUT = async (req) => {
       return new Response(JSON.stringify({message: 'Schedule not found!'}), {
         status: 404,
         headers: {'Content-Type': 'application/json'},
-      });
-    }
-
-    return new Response(
-      JSON.stringify({message: 'Schedule updated successfully!', data: result}),
-      {status: 200, headers: {'Content-Type': 'application/json'}},
-    );
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        message: 'Cannot update schedule!',
-        error: error.message,
-      }),
-      {status: 500, headers: {'Content-Type': 'application/json'}},
-    );
-  }
-};
-
-export const DELETE = async (req) => {
-  try {
-    const url = new URL(req.url);
-    const id = url.searchParams.get('id');
-
-    if (!id) {
+        });
+      }
+  
       return new Response(
-        JSON.stringify({message: 'Schedule ID is required'}),
-        {status: 400, headers: {'Content-Type': 'application/json'}},
+        JSON.stringify({message: 'Schedule updated successfully!', data: result}),
+        {status: 200, headers: {'Content-Type': 'application/json'}},
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({
+          message: 'Cannot update schedule!',
+          error: error.message,
+        }),
+        {status: 500, headers: {'Content-Type': 'application/json'}},
       );
     }
-
-    const result = await db
-      .delete(batchSchedules)
-      .where(eq(batchSchedules.id, Number(id)))
-      .returning();
-
-    if (!result.length) {
-      return new Response(JSON.stringify({message: 'Schedule not found!'}), {
-        status: 404,
-        headers: {'Content-Type': 'application/json'},
-      });
+  };
+  
+  export const DELETE = async (req) => {
+    try {
+      const url = new URL(req.url);
+      const id = url.searchParams.get('id');
+  
+      if (!id) {
+        return new Response(
+          JSON.stringify({message: 'Schedule ID is required'}),
+          {status: 400, headers: {'Content-Type': 'application/json'}},
+        );
+      }
+  
+      const result = await db
+        .delete(batchSchedules)
+        .where(eq(batchSchedules.id, Number(id)))
+        .returning();
+  
+      if (!result.length) {
+        return new Response(JSON.stringify({message: 'Schedule not found!'}), {
+          status: 404,
+          headers: {'Content-Type': 'application/json'},
+        });
+      }
+  
+      return new Response(
+        JSON.stringify({message: 'Schedule deleted successfully!', data: result}),
+        {status: 200, headers: {'Content-Type': 'application/json'}},
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({
+          message: 'Cannot delete schedule!',
+          error: error.message,
+        }),
+        {status: 500, headers: {'Content-Type': 'application/json'}},
+      );
     }
-
-    return new Response(
-      JSON.stringify({message: 'Schedule deleted successfully!', data: result}),
-      {status: 200, headers: {'Content-Type': 'application/json'}},
-    );
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        message: 'Cannot delete schedule!',
-        error: error.message,
-      }),
-      {status: 500, headers: {'Content-Type': 'application/json'}},
-    );
-  }
-};
+  };

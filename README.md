@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Emdad English Aid - Features
 
-## Getting Started
+### Student Features
 
-First, run the development server:
+- **Review System**: Students can add reviews for Emdad English Aid.
+- **Batch Booking**: Students can book seats for running batches that are accepting students directly from the landing
+  page.
+- **Success Stories**: View stories of successful students admitted to reputed universities.
+- **Team**: Meet the expert team behind Emdad English Aid.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Admin & Staff Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Review Control**: Admins can control which reviews are displayed on the landing page.
+- **Success Story Management**: Admins and staff can manage the success stories shown in the slider and dedicated page.
+- **Team Management**: Manage team members' data through the admin panel.
+- **Student Management**: Staff can add/remove students in their own batches. Admins have access to all batches.
+- **Payment Collection**: Staff can collect payments from students.
+- **Refund Management**: Staff can process refunds for students.
+- **Cost Management**: Staff and admins can add costs related to batches (e.g., reason, amount, user tracking).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### About Emdad English Aid
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Emdad English Aid is a private program for English based in Rajshahi (Batar more). It provides academic coaching for HSC
+1st year, 2nd year, and Admission tests. Students from reputed colleges in Rajshahi, Naogaon, Natore, Jaipurhat, Bogra,
+and Chapai attend and achieve success.

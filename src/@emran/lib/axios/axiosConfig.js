@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {router} from 'next/client';
+
 
 const apiConfig = axios.create({
   headers: {
@@ -33,7 +33,9 @@ apiConfig.interceptors.response.use(
   async function(error) {
     if (error?.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('token');
-      await router.push('/signin');
+      if (typeof window !== 'undefined') {
+        window.location.href = '/signin';
+      }
     }
     return Promise.reject(error);
   },
