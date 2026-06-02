@@ -102,7 +102,6 @@ export default function TeamManagementModule() {
         </button>
       </div>
 
-      <div className="bg-cyan-950/50 border border-cyan-800/50 rounded-2xl p-4 overflow-hidden">
         <DataTable
           columns={columns}
           tableData={TeamData}
@@ -117,7 +116,6 @@ export default function TeamManagementModule() {
           tableTitle={'Team Members'}
           enableRowNumbers={true}
         />
-      </div>
 
       <Modal isOpen={modal} onClose={() => setModal(false)} title="Add Team Member">
         <form onSubmit={handleSubmit} className="space-y-4 p-4 text-white">

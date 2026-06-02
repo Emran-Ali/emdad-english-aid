@@ -181,13 +181,13 @@ const DataTable = ({
 
   // Table header component
   const TableHeader = () => (
-    <thead className='bg-cyan-600 text-white'>
+    <thead className='bg-cyan-950/80 text-cyan-400 border-b border-cyan-800/50'>
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
           {headerGroup.headers.map((header) => (
             <th
               key={header.id}
-              className='px-6 py-3 text-left text-xs font-bold uppercase tracking-wider cursor-pointer'
+              className='px-6 py-4 text-left text-xs font-bold uppercase tracking-wider cursor-pointer hover:bg-cyan-900/50 transition-colors'
               onClick={header.column.getToggleSortingHandler()}>
               <div className='flex items-center'>
                 {flexRender(
@@ -213,9 +213,9 @@ const DataTable = ({
 
   // Table body component
   const TableBody = () => (
-    <tbody className='bg-gray-100 text-black divide-y divide-gray-200'>
+    <tbody className='bg-cyan-950/30 text-cyan-100 divide-y divide-cyan-800/50'>
       {table.getRowModel().rows.map((row) => (
-        <tr key={row.id}>
+        <tr key={row.id} className='hover:bg-cyan-900/30 transition-colors'>
           {row.getVisibleCells().map((cell) => (
             <td key={cell.id} className='px-6 py-4 whitespace-nowrap text-sm'>
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -228,23 +228,23 @@ const DataTable = ({
 
   // Pagination component
   const Pagination = () => (
-    <div className='flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6'>
+    <div className='flex items-center justify-between px-4 py-4 bg-cyan-950/50 border-t border-cyan-800/50 sm:px-6'>
       <div className='flex items-center'>
-        <span className='text-sm text-gray-700'>
+        <span className='text-sm text-cyan-300'>
           Showing
           <select
             value={pageSize}
             onChange={handleChangeRowsPerPage}
-            className='mx-2 p-2 border-cyan-600 rounded-md'>
+            className='mx-2 p-2 bg-cyan-900 border border-cyan-700 text-cyan-100 rounded-md focus:outline-none focus:border-cyan-500'>
             {[5, 10, 20].map((size) => (
-              <option key={size} value={size}>
+              <option key={size} value={size} className='bg-cyan-950'>
                 {size}
               </option>
             ))}
           </select>
           entries
         </span>
-        <span className='text-sm text-gray-700 ml-10'>
+        <span className='text-sm text-cyan-400 ml-10 font-medium'>
           Total {totalCount} {tableTitle}
         </span>
       </div>
@@ -253,17 +253,17 @@ const DataTable = ({
         <button
           onClick={() => table.setPageIndex((old) => Math.max(old - 1, 0))}
           disabled={pageIndex === 0}
-          className='px-3 bg-gray-100 text-black py-1 border rounded-md disabled:opacity-50
-          disabled:cursor-not-allowed'>
+          className='px-4 py-2 bg-cyan-900 text-cyan-100 border border-cyan-700 rounded-lg disabled:opacity-30
+          disabled:cursor-not-allowed hover:bg-cyan-800 transition-colors'>
           Prev
         </button>
-        <span className='text-sm text-black'>
+        <span className='text-sm text-cyan-300 font-medium px-2'>
           Page {pageIndex + 1} of {Math.ceil(totalCount / pageSize)}
         </span>
         <button
           onClick={() => table.setPageIndex((old) => old + 1)}
           disabled={pageIndex >= Math.ceil(totalCount / pageSize) - 1}
-          className='px-3 py-1 bg-gray-100 text-black border rounded-md disabled:opacity-50 disabled:cursor-not-allowed'>
+          className='px-4 py-2 bg-cyan-900 text-cyan-100 border border-cyan-700 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cyan-800 transition-colors'>
           Next
         </button>
       </div>
@@ -272,8 +272,8 @@ const DataTable = ({
 
   return (
     <div className='flex flex-col'>
-      <div className='mt-4 bg-white rounded-lg shadow'>
-        <div className='p-6 '>
+      <div className='mt-4 bg-cyan-950/40 backdrop-blur-sm rounded-2xl shadow-2xl border border-cyan-800/50 overflow-hidden'>
+        <div className='p-6'>
           {showTopBar && (
             <FilterBar
               tableInstance={table}
@@ -288,8 +288,8 @@ const DataTable = ({
             />
           )}
 
-          <div className='overflow-x-auto border-2 border-cyan-600 rounded-lg min-h-[50vh]'>
-            <table className='min-w-full divide-y divide-gray-200'>
+          <div className='overflow-x-auto border border-cyan-800/50 rounded-xl min-h-[50vh] bg-cyan-950/20'>
+            <table className='min-w-full divide-y divide-cyan-800/50'>
               <TableHeader />
               {datatableData?.length > 0 && <TableBody />}
             </table>

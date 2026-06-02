@@ -90,7 +90,6 @@ export default function CostModule() {
         </button>
       </div>
 
-      <div className="bg-cyan-950/50 border border-cyan-800/50 rounded-2xl p-4 overflow-hidden">
         <DataTable
           columns={columns}
           tableData={CostData}
@@ -105,7 +104,6 @@ export default function CostModule() {
           tableTitle={'Expenses Tracking'}
           enableRowNumbers={true}
         />
-      </div>
 
       <Modal isOpen={modal} onClose={() => setModal(false)} title="Add New Expense">
         <form onSubmit={handleSubmit} className="space-y-4 p-4 text-white">

@@ -80,7 +80,6 @@ export default function ReviewsModule() {
       <div className='flex justify-between text-white mb-6'>
         <div className='text-3xl font-bold'>Student Reviews</div>
       </div>
-      <div className="bg-cyan-950/50 border border-cyan-800/50 rounded-2xl p-4 overflow-hidden">
         <DataTable
           columns={columns}
           tableData={ReviewsData}
@@ -95,7 +94,6 @@ export default function ReviewsModule() {
           tableTitle={'Reviews Management'}
           enableRowNumbers={true}
         />
-      </div>
     </div>
   );
 }

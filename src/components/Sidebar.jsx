@@ -110,26 +110,9 @@ const Sidebar = () => {
       <aside className={`
         fixed top-0 left-0 h-full z-[105] bg-cyan-950 text-white w-64 transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        border-r border-cyan-800/50 shadow-2xl
+        border-r border-cyan-800/50 shadow-2xl pt-16 md:pt-20
       `}>
         <div className="flex flex-col h-full">
-          {/* Logo Area */}
-          <div className="p-6 border-b border-cyan-800/50">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-110">
-                <Image src="/assets/image/logo.png" fill alt="Logo" className="object-contain" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">
-                  Emdad English
-                </span>
-                <span className="text-[10px] uppercase tracking-widest text-cyan-400 font-semibold">
-                  Admin Panel
-                </span>
-              </div>
-            </Link>
-          </div>
-
           {/* Navigation Items */}
           <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2 custom-scrollbar">
             {filteredItems.map((item) => {

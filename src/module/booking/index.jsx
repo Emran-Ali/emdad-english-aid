@@ -96,7 +96,6 @@ export default function BookingModule() {
       <div className='flex justify-between text-white mb-6'>
         <div className='text-3xl font-bold'>Batch Bookings</div>
       </div>
-      <div className="bg-cyan-950/50 border border-cyan-800/50 rounded-2xl p-4 overflow-hidden shadow-xl">
         <DataTable
           columns={columns}
           tableData={BookingData}
@@ -111,7 +110,6 @@ export default function BookingModule() {
           tableTitle={'Bookings Management'}
           enableRowNumbers={true}
         />
-      </div>
     </div>
   );
 }

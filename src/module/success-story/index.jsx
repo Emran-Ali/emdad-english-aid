@@ -117,7 +117,6 @@ export default function SuccessStoryModule() {
         </button>
       </div>
 
-      <div className="bg-cyan-950/50 border border-cyan-800/50 rounded-2xl p-4 overflow-hidden">
         <DataTable
           columns={columns}
           tableData={StoryData}
@@ -132,7 +131,6 @@ export default function SuccessStoryModule() {
           tableTitle={'Success Stories Management'}
           enableRowNumbers={true}
         />
-      </div>
 
       <Modal isOpen={modal} onClose={() => setModal(false)} title="Add Success Story">
         <form onSubmit={handleSubmit} className="space-y-4 p-4 text-white">
