@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast';
+
 export async function createUser(userData) {
     console.log('User call')
         const response = await fetch('/api/user', {
@@ -9,7 +11,8 @@ export async function createUser(userData) {
         });
 
         if (!response.ok) {
-            alert('Failed to create User');
+            toast.error('Failed to create User');
+            return;
         }
-        alert(response.message);
+        toast.success('User created successfully');
 }

@@ -4,6 +4,7 @@ import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo } from 'react';
 import axios from 'axios';
 import { FaCheckCircle, FaHourglassHalf, FaTimesCircle, FaPlus, FaEdit } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import { useState } from 'react';
 import AddBooking from './AddBooking';
 
@@ -22,9 +23,11 @@ export default function BookingModule() {
   const handleUpdateStatus = async (id, status) => {
     try {
       await axios.put('/api/booking', { id, status });
+      toast.success(`Booking status updated to ${status}`);
       mutate();
     } catch (err) {
       console.error('Failed to update booking status', err);
+      toast.error('Failed to update booking status');
     }
   };
 

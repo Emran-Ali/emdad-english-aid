@@ -7,6 +7,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { BiMoney, BiArrowBack, BiUser } from 'react-icons/bi';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function BatchStudentModule({ batchId }) {
   const router = useRouter();
@@ -41,11 +42,12 @@ export default function BatchStudentModule({ batchId }) {
         ...paymentData,
         action: 'collect_payment'
       });
+      toast.success('Payment collected successfully');
       setPaymentModal(false);
       mutate();
     } catch (err) {
       console.error('Failed to collect payment', err);
-      alert('Failed to collect payment');
+      toast.error('Failed to collect payment');
     }
   };
 

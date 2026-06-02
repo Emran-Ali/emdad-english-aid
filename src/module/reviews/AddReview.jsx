@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
 import { FaStar } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 export default function AddReview({ isOpen, onClose, mutate, initialData }) {
   const [students, setStudents] = useState([]);
@@ -72,15 +73,17 @@ export default function AddReview({ isOpen, onClose, mutate, initialData }) {
       };
       if (initialData) {
         await axios.put('/api/reviews', { ...payload, id: initialData.id });
+        toast.success('Review updated successfully');
       } else {
         await axios.post('/api/reviews', payload);
+        toast.success('Review added successfully');
       }
       reset();
       mutate();
       onClose();
     } catch (error) {
       console.error('Failed to save review:', error);
-      alert('Failed to save review');
+      toast.error('Failed to save review');
     } finally {
       setLoading(false);
     }

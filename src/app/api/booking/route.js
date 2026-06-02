@@ -76,7 +76,12 @@ async function handleBookingConfirmation(booking) {
 export const POST = async (req) => {
   try {
     const body = await req.json();
-    const {batchId, studentName, studentEmail, contactNumber, createUser} = body;
+    const batchId = body.batchId ? Number(body.batchId) : null;
+    const {studentName, studentEmail, contactNumber, createUser} = body;
+
+    if (!batchId || isNaN(batchId)) {
+      return new Response(JSON.stringify({message: 'Invalid batch ID'}), {status: 400});
+    }
 
     const session = await getServerSession(authOptions);
     const isAdminOrStaff = session && (session.user.role === 'admin' || session.user.role === 'staff');
@@ -129,6 +134,11 @@ export const PUT = async (req) => {
 
     const body = await req.json();
     const {id, ...updateData} = body;
+    
+    if (!id || isNaN(Number(id))) {
+      return new Response(JSON.stringify({message: 'Invalid booking ID'}), {status: 400});
+    }
+
     const result = await db.update(bookings)
       .set(updateData)
       .where(eq(bookings.id, Number(id)))

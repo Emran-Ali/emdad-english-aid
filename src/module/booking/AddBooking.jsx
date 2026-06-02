@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
+import toast from 'react-hot-toast';
 
 export default function AddBooking({ isOpen, onClose, mutate, initialData }) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -68,15 +69,17 @@ export default function AddBooking({ isOpen, onClose, mutate, initialData }) {
           ...payload,
           id: initialData.id,
         });
+        toast.success('Booking updated successfully');
       } else {
         await axios.post('/api/booking', payload);
+        toast.success('Booking added successfully');
       }
       reset();
       mutate();
       onClose();
     } catch (error) {
       console.error('Failed to save booking:', error);
-      alert('Failed to save booking: ' + (error.response?.data?.message || error.message));
+      toast.error('Failed to save booking: ' + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }

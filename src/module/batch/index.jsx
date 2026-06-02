@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import {BiSolidShow} from 'react-icons/bi';
 import {BiCalendar, BiEdit, BiTrash, BiPlus} from 'react-icons/bi';
 import {FaUsers, FaUserGraduate, FaPlus} from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 export default function App() {
   const router = useRouter();
@@ -189,12 +190,12 @@ export default function App() {
       try {
         const res = await deleteBatchApi(`/api/batch?id=${id}`);
         if (res) {
-          alert('Batch deleted successfully!');
+          toast.success('Batch deleted successfully!');
           mutate();
         }
       } catch (error) {
         console.error('Delete error:', error);
-        alert('Failed to delete batch');
+        toast.error('Failed to delete batch');
       }
     }
   };

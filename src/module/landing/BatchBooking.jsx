@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const BatchBooking = () => {
   const [batches, setBatches] = useState([]);
@@ -41,10 +42,12 @@ const BatchBooking = () => {
         batchId: selectedBatch.id,
         ...formData
       });
+      toast.success('Booking successful! We will contact you soon.');
       setStatus('Booking successful! We will contact you soon.');
       setFormData({studentName: '', studentEmail: '', contactNumber: '', createUser: false});
       setSelectedBatch(null);
     } catch (error) {
+      toast.error('Booking failed: ' + (error.response?.data?.message || error.message));
       setStatus('Booking failed: ' + (error.response?.data?.message || error.message));
     }
   };

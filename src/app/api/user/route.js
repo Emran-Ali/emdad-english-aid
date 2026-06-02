@@ -4,6 +4,8 @@ import {hashPassword} from '@emran/lib/util/passwordManage';
 import {photoUpload} from '@emran/lib/util/photoUpload';
 import {count, like, or, eq, and} from 'drizzle-orm';
 import {getServerSession} from 'next-auth';
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {NextResponse} from "next/server";
 
 export const POST = async (req) => {
   try {

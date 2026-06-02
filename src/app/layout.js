@@ -1,6 +1,7 @@
 // app/layout.js
 'use client';
 import {SessionProvider} from 'next-auth/react';
+import {Toaster} from 'react-hot-toast';
 
 export default function RootLayout({children}) {
   return (
@@ -22,7 +23,10 @@ export default function RootLayout({children}) {
         defer="defer"></script>
     </head>
     <body>
-    <SessionProvider>{children}</SessionProvider>
+    <SessionProvider>
+      {children}
+      <Toaster position="top-right" />
+    </SessionProvider>
     </body>
     </html>
   );
