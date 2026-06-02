@@ -1,5 +1,6 @@
 'use client';
-import Menu from '@/components/menu';
+import Menu from '@/components/Menu';
+import Sidebar from '@/components/Sidebar';
 import {ApiProvider} from '@emran/Context/APIContext';
 import '.././globals.css';
 import {useSession} from 'next-auth/react';
@@ -32,12 +33,15 @@ export default function RootLayout({children}) {
 
   return (
     <main
-      className="leading-normal tracking-normal bg-cover bg-fixed min-h-screen bg-gradient-radial-dark"
+      className="leading-normal tracking-normal bg-cover bg-fixed min-h-screen bg-gradient-radial-dark flex"
     >
       <ApiProvider>
         <Menu />
-        <div className="w-full">
-          <div className="max-w-[1444] px-6 md:px-12 py-4">{children}</div>
+        <Sidebar />
+        <div className="flex-1 lg:ml-64 transition-all duration-300">
+          <div className="max-w-[1444px] mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 lg:py-10">
+            {children}
+          </div>
         </div>
       </ApiProvider>
     </main>
