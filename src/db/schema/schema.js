@@ -220,7 +220,7 @@ export const batchSchedules = pgTable(
   },
 );
 
-// Batch-Student enrollment
+// Batch-Student enrollment (User is optional)
 export const enrollments = pgTable(
   'enrollments',
   {
@@ -229,19 +229,19 @@ export const enrollments = pgTable(
       .references(() => batches.id, {onDelete: 'cascade'})
       .notNull(),
     studentId: integer('student_id')
-      .references(() => students.id, {onDelete: 'cascade'})
-      .notNull(),
+      .references(() => students.id, {onDelete: 'set null'}),
+    studentName: varchar('student_name', {length: 255}), // For optional student user
+    studentContact: varchar('student_contact', {length: 20}), // For optional student user
     enrollmentDate: date('enrollment_date').defaultNow().notNull(),
     status: varchar('status', {length: 50}).default('active').notNull(), // active, completed, dropped
+    totalAmount: decimal('total_amount', {precision: 10, scale: 2}),
+    paidAmount: decimal('paid_amount', {precision: 10, scale: 2}).default(0),
+    paymentStatus: varchar('payment_status', {length: 50}).default('pending'), // pending, partial, paid
     completionDate: date('completion_date'),
     ...timestamps,
   },
   (table) => {
     return {
-      batchStudentUnique: unique('batch_student_unique').on(
-        table.batchId,
-        table.studentId,
-      ),
       statusIdx: index('enrollment_status_idx').on(table.status),
     };
   },
@@ -426,6 +426,9 @@ export const reviews = pgTable('reviews', {
 // Success Stories table
 export const successStories = pgTable('success_stories', {
   id: serial('id').primaryKey(),
+  studentId: integer('student_id').references(() => students.id, {
+    onDelete: 'set null',
+  }),
   studentName: varchar('student_name', {length: 255}).notNull(),
   university: varchar('university', {length: 255}).notNull(),
   department: varchar('department', {length: 255}).notNull(),
@@ -438,8 +441,17 @@ export const successStories = pgTable('success_stories', {
 // Team table
 export const team = pgTable('team', {
   id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id, {
+    onDelete: 'set null',
+  }),
   name: varchar('name', {length: 255}).notNull(),
   role: varchar('role', {length: 255}).notNull(),
+  contact: varchar('contact', {length: 20}),
+  facebook: varchar('facebook', {length: 255}),
+  linkedin: varchar('linkedin', {length: 255}),
+  github: varchar('github', {length: 255}),
+  twitter: varchar('twitter', {length: 255}),
+  instagram: varchar('instagram', {length: 255}),
   image: varchar('image', {length: 255}),
   bio: text('bio'),
   order: integer('order').default(0),

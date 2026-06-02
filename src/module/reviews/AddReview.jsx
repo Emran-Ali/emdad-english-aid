@@ -1,46 +1,118 @@
 'use client';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
 import { FaStar } from 'react-icons/fa';
 
-export default function AddReview({ isOpen, onClose, mutate }) {
-  const { register, handleSubmit, reset, formState: { errors }, watch } = useForm({
+export default function AddReview({ isOpen, onClose, mutate, initialData }) {
+  const [students, setStudents] = useState([]);
+  const { register, handleSubmit, reset, formState: { errors }, watch, setValue } = useForm({
     defaultValues: {
       rating: 5,
-      isShown: true
+      isShown: true,
+      studentId: '',
+      reviewerName: '',
+      reviewerHandle: '',
+      content: ''
     }
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        ...initialData,
+        studentId: initialData.studentId || ''
+      });
+    } else {
+      reset({
+        rating: 5,
+        isShown: true,
+        studentId: '',
+        reviewerName: '',
+        reviewerHandle: '',
+        content: ''
+      });
+    }
+  }, [initialData, reset]);
+
   const [loading, setLoading] = useState(false);
   const currentRating = watch('rating');
+  const selectedStudentId = watch('studentId');
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get('/api/user?per_page=-1&role=student');
+        setStudents(res.data.data || []);
+      } catch (err) {
+        console.error('Failed to fetch students', err);
+      }
+    };
+    if (isOpen) {
+      fetchStudents();
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (selectedStudentId && !initialData) {
+      const student = students.find(s => s.id === Number(selectedStudentId));
+      if (student) {
+        setValue('reviewerName', student.name);
+      }
+    }
+  }, [selectedStudentId, students, setValue, initialData]);
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await axios.post('/api/reviews', data);
+      const payload = {
+        ...data,
+        studentId: data.studentId ? Number(data.studentId) : null
+      };
+      if (initialData) {
+        await axios.put('/api/reviews', { ...payload, id: initialData.id });
+      } else {
+        await axios.post('/api/reviews', payload);
+      }
       reset();
       mutate();
       onClose();
     } catch (error) {
-      console.error('Failed to add review:', error);
-      alert('Failed to add review');
+      console.error('Failed to save review:', error);
+      alert('Failed to save review');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add New Review">
+    <Modal isOpen={isOpen} onClose={onClose} title={initialData ? "Edit Review" : "Add New Review"}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-cyan-300 mb-1">Reviewer Name</label>
-          <input
-            {...register('reviewerName', { required: 'Name is required' })}
-            className="w-full p-2 bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg focus:outline-none focus:border-cyan-500"
-            placeholder="John Doe"
-          />
-          {errors.reviewerName && <p className="text-red-500 text-xs mt-1">{errors.reviewerName.message}</p>}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-cyan-300 mb-1">Associate Student (Optional)</label>
+            <select
+              {...register('studentId')}
+              className="w-full p-2 bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg focus:outline-none focus:border-cyan-500"
+            >
+              <option value="" className="bg-cyan-950">Select Student</option>
+              {students.map(s => (
+                <option key={s.id} value={s.id} className="bg-cyan-950">
+                  {s.name} ({s.email})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-cyan-300 mb-1">Reviewer Name</label>
+            <input
+              {...register('reviewerName', { required: 'Name is required' })}
+              className="w-full p-2 bg-cyan-900/50 border border-cyan-700/50 text-cyan-100 rounded-lg focus:outline-none focus:border-cyan-500"
+              placeholder="John Doe"
+            />
+            {errors.reviewerName && <p className="text-red-500 text-xs mt-1">{errors.reviewerName.message}</p>}
+          </div>
         </div>
 
         <div>

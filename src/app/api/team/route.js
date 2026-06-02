@@ -39,7 +39,7 @@ export const PUT = async (req) => {
     const {id, ...updateData} = body;
     const result = await db.update(team)
       .set(updateData)
-      .where(eq(team.id, id))
+      .where(eq(team.id, Number(id)))
       .returning();
 
     return new Response(JSON.stringify({data: result[0]}), {status: 200});

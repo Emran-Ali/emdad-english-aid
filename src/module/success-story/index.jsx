@@ -5,11 +5,14 @@ import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo, useState } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
-import { FaPlus, FaEye, FaEyeSlash, FaGraduationCap } from 'react-icons/fa';
+import { FaPlus, FaEye, FaEyeSlash, FaGraduationCap, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function SuccessStoryModule() {
   const [modal, setModal] = useState(false);
+  const [editingStory, setEditingStory] = useState(null);
+  const [students, setStudents] = useState([]);
   const [formData, setFormData] = useState({
+    studentId: '',
     studentName: '',
     university: '',
     department: '',
@@ -26,6 +29,18 @@ export default function SuccessStoryModule() {
     mutate,
   } = useDataTableFetchData({ urlPath: 'api/success-story' });
 
+  useMemo(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get('/api/user?per_page=-1&role=student');
+        setStudents(res.data.data || []);
+      } catch (err) {
+        console.error('Failed to fetch students', err);
+      }
+    };
+    fetchStudents();
+  }, []);
+
   const handleToggleShow = async (id, currentStatus) => {
     try {
       await axios.put('/api/success-story', { id, isShown: !currentStatus });
@@ -35,13 +50,41 @@ export default function SuccessStoryModule() {
     }
   };
 
+  const handleStudentChange = (e) => {
+    const studentId = e.target.value;
+    const student = students.find(s => s.id === Number(studentId));
+    if (student) {
+      setFormData({
+        ...formData,
+        studentId,
+        studentName: student.name,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        studentId: '',
+        studentName: '',
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/success-story', formData);
+      const payload = {
+        ...formData,
+        studentId: formData.studentId ? Number(formData.studentId) : null,
+      };
+      if (editingStory) {
+        await axios.put('/api/success-story', { ...payload, id: editingStory.id });
+      } else {
+        await axios.post('/api/success-story', payload);
+      }
       setModal(false);
+      setEditingStory(null);
       mutate();
       setFormData({
+        studentId: '',
         studentName: '',
         university: '',
         department: '',
@@ -49,7 +92,7 @@ export default function SuccessStoryModule() {
         isShown: true,
       });
     } catch (err) {
-      console.error('Failed to add success story', err);
+      console.error('Failed to save success story', err);
     }
   };
 
@@ -90,17 +133,46 @@ export default function SuccessStoryModule() {
         cell: (props) => {
           const { id, isShown } = props.row.original;
           return (
-            <button
-              onClick={() => handleToggleShow(id, isShown)}
-              className={`p-2 rounded-lg transition-colors ${isShown ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-green-500/20 text-green-500 hover:bg-green-500/30'}`}
-            >
-              {isShown ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleToggleShow(id, isShown)}
+                className={`p-2 rounded-lg transition-colors ${isShown ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-green-500/20 text-green-500 hover:bg-green-500/30'}`}
+                title={isShown ? 'Hide' : 'Show'}
+              >
+                {isShown ? <FaEyeSlash /> : <FaEye />}
+              </button>
+              <button
+                onClick={() => {
+                  const data = props.row.original;
+                  setEditingStory(data);
+                  setFormData({
+                    studentId: data.studentId?.toString() || '',
+                    studentName: data.studentName,
+                    university: data.university,
+                    department: data.department,
+                    session: data.session,
+                    isShown: data.isShown,
+                  });
+                  setModal(true);
+                }}
+                className="p-2 bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30 rounded-lg transition-colors"
+                title="Edit"
+              >
+                <FaEdit />
+              </button>
+              <button
+                onClick={() => handleDelete(id)}
+                className="p-2 bg-red-500/20 text-red-500 hover:bg-red-500/30 rounded-lg transition-colors"
+                title="Delete"
+              >
+                <FaTrash />
+              </button>
+            </div>
           );
         },
       },
     ],
-    [mutate],
+    [handleToggleShow],
   );
 
   return (
@@ -110,7 +182,18 @@ export default function SuccessStoryModule() {
           <FaGraduationCap className="text-cyan-500" /> Success Stories
         </div>
         <button
-          onClick={() => setModal(true)}
+          onClick={() => {
+            setEditingStory(null);
+            setFormData({
+              studentId: '',
+              studentName: '',
+              university: '',
+              department: '',
+              session: '',
+              isShown: true,
+            });
+            setModal(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-cyan-700 hover:bg-cyan-800 rounded-xl font-bold transition-all shadow-lg"
         >
           <FaPlus /> Add New Story
@@ -132,34 +215,51 @@ export default function SuccessStoryModule() {
           enableRowNumbers={true}
         />
 
-      <Modal isOpen={modal} onClose={() => setModal(false)} title="Add Success Story">
+      <Modal isOpen={modal} onClose={() => { setModal(false); setEditingStory(null); }} title={editingStory ? "Edit Success Story" : "Add Success Story"}>
         <form onSubmit={handleSubmit} className="space-y-4 p-4 text-white">
-          <div>
-            <label className="block text-sm font-medium mb-1">Student Name</label>
-            <input
-              type="text"
-              className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
-              required
-              value={formData.studentName}
-              onChange={(e) => setFormData({...formData, studentName: e.target.value})}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">Associate Student (Optional)</label>
+              <select
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 rounded-lg p-2 text-cyan-100 focus:outline-none focus:border-cyan-500"
+                value={formData.studentId}
+                onChange={handleStudentChange}
+              >
+                <option value="" className="bg-cyan-950">Select Student</option>
+                {students.map(s => (
+                  <option key={s.id} value={s.id} className="bg-cyan-950">
+                    {s.name} ({s.email})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">Student Name</label>
+              <input
+                type="text"
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 rounded-lg p-2 text-cyan-100 focus:outline-none focus:border-cyan-500"
+                required
+                value={formData.studentName}
+                onChange={(e) => setFormData({...formData, studentName: e.target.value})}
+              />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">University</label>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">University</label>
               <input
                 type="text"
-                className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 rounded-lg p-2 text-cyan-100 focus:outline-none focus:border-cyan-500"
                 required
                 value={formData.university}
                 onChange={(e) => setFormData({...formData, university: e.target.value})}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Department</label>
+              <label className="block text-sm font-medium mb-1 text-cyan-300">Department</label>
               <input
                 type="text"
-                className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+                className="w-full bg-cyan-900/50 border border-cyan-700/50 rounded-lg p-2 text-cyan-100 focus:outline-none focus:border-cyan-500"
                 required
                 value={formData.department}
                 onChange={(e) => setFormData({...formData, department: e.target.value})}
@@ -167,10 +267,10 @@ export default function SuccessStoryModule() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Session (e.g., 2023-24)</label>
+            <label className="block text-sm font-medium mb-1 text-cyan-300">Session (e.g., 2023-24)</label>
             <input
               type="text"
-              className="w-full bg-cyan-900 border border-cyan-700 rounded-lg p-2"
+              className="w-full bg-cyan-900/50 border border-cyan-700/50 rounded-lg p-2 text-cyan-100 focus:outline-none focus:border-cyan-500"
               required
               value={formData.session}
               onChange={(e) => setFormData({...formData, session: e.target.value})}
@@ -178,7 +278,7 @@ export default function SuccessStoryModule() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-cyan-600 hover:bg-cyan-700 rounded-xl font-bold transition-all mt-4"
+            className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition-all mt-4 shadow-lg shadow-cyan-900/20"
           >
             Save Success Story
           </button>

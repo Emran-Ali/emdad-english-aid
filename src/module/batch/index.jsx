@@ -5,18 +5,24 @@ import AssignStaff from '@/module/batch/AssignStaff';
 import BatchSchedule from '@/module/batch/BatchSchedule';
 import CreateBatch from '@/module/batch/CreateBatch';
 import EditBatch from '@/module/batch/EditBatch';
+import BatchDetails from '@/module/batch/BatchDetails';
+import AddBooking from '@/module/booking/AddBooking';
 import DataTable from '@emran/Components/ReactTable/DataTable';
 import {processCellLimitedString} from '@emran/Components/ReactTable/tableHelper';
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import {useBatchService} from '@service/BatchService';
 import {useMemo, useState} from 'react';
+import { useRouter } from 'next/navigation';
 import {BiSolidShow} from 'react-icons/bi';
-import {BiCalendar, BiEdit, BiTrash} from 'react-icons/bi';
-import {FaUsers} from 'react-icons/fa';
+import {BiCalendar, BiEdit, BiTrash, BiPlus} from 'react-icons/bi';
+import {FaUsers, FaUserGraduate, FaPlus} from 'react-icons/fa';
 
 export default function App() {
+  const router = useRouter();
   const [modal, setModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [detailsModal, setDetailsModal] = useState(false);
+  const [addStudentModal, setAddStudentModal] = useState(false);
   const [scheduleModal, setScheduleModal] = useState(false);
   const [assignStaffModal, setAssignStaffModal] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
@@ -39,6 +45,11 @@ export default function App() {
 
   const onAssignStaffClose = () => {
     setAssignStaffModal(false);
+  };
+
+  const onDetailsClose = () => {
+    setDetailsModal(false);
+    setSelectedBatch(null);
   };
 
   const {
@@ -114,8 +125,23 @@ export default function App() {
               icon: BiSolidShow,
               label: 'View',
               onClick: () => {
-                // View functionality - could open a detail modal
-                console.log('View batch:', data.id);
+                setSelectedBatch(data);
+                setDetailsModal(true);
+              },
+            },
+            {
+              icon: FaUserGraduate,
+              label: 'View Students',
+              onClick: () => {
+                router.push(`/batch/${data.id}/students`);
+              },
+            },
+            {
+              icon: FaPlus,
+              label: 'Add Student',
+              onClick: () => {
+                setSelectedBatch(data);
+                setAddStudentModal(true);
               },
             },
             {
@@ -230,6 +256,22 @@ export default function App() {
           />
         )}
       </Modal>
+      <Modal isOpen={detailsModal} onClose={onDetailsClose} title={'Batch Details'}>
+        {selectedBatch && (
+          <BatchDetails
+            batchId={selectedBatch.id}
+          />
+        )}
+      </Modal>
+      <AddBooking
+        isOpen={addStudentModal}
+        onClose={() => {
+          setAddStudentModal(false);
+          setSelectedBatch(null);
+        }}
+        mutate={onFetchData}
+        initialData={selectedBatch ? { batchId: selectedBatch.id, status: 'confirmed' } : null}
+      />
       <BatchSchedule
         batchId={selectedBatch?.id}
         isOpen={scheduleModal}

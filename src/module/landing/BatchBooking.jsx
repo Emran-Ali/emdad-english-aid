@@ -10,6 +10,7 @@ const BatchBooking = () => {
     studentName: '',
     studentEmail: '',
     contactNumber: '',
+    createUser: false,
   });
   const [status, setStatus] = useState('');
 
@@ -41,7 +42,7 @@ const BatchBooking = () => {
         ...formData
       });
       setStatus('Booking successful! We will contact you soon.');
-      setFormData({studentName: '', studentEmail: '', contactNumber: ''});
+      setFormData({studentName: '', studentEmail: '', contactNumber: '', createUser: false});
       setSelectedBatch(null);
     } catch (error) {
       setStatus('Booking failed: ' + (error.response?.data?.message || error.message));
@@ -113,6 +114,18 @@ const BatchBooking = () => {
               onChange={(e) => setFormData({...formData, contactNumber: e.target.value})}
               required
             />
+            <div className="flex items-center gap-2 px-2">
+              <input
+                type="checkbox"
+                id="createUserLanding"
+                className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                checked={formData.createUser}
+                onChange={(e) => setFormData({...formData, createUser: e.target.checked})}
+              />
+              <label htmlFor="createUserLanding" className="text-gray-400 text-sm">
+                Create account for dashboard access
+              </label>
+            </div>
             <button
               type='submit'
               className='w-full py-4 px-8 font-medium tracking-tighter bg-green-400 hover:bg-green-500 text-black rounded-full transition duration-300'

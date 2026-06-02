@@ -4,12 +4,36 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
 
-export default function AddBooking({ isOpen, onClose, mutate }) {
+export default function AddBooking({ isOpen, onClose, mutate, initialData }) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
-      status: 'confirmed'
+      status: 'confirmed',
+      batchId: '',
+      studentName: '',
+      studentEmail: '',
+      contactNumber: '',
+      createUser: false
     }
   });
+
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        ...initialData,
+        batchId: initialData.batchId.toString()
+      });
+    } else {
+      reset({
+        status: 'confirmed',
+        batchId: '',
+        studentName: '',
+        studentEmail: '',
+        contactNumber: '',
+        createUser: false
+      });
+    }
+  }, [initialData, reset]);
+
   const [loading, setLoading] = useState(false);
   const [batches, setBatches] = useState([]);
 
@@ -30,23 +54,36 @@ export default function AddBooking({ isOpen, onClose, mutate }) {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await axios.post('/api/booking', {
-        ...data,
-        batchId: Number(data.batchId)
-      });
+      const payload = {
+        batchId: Number(data.batchId),
+        studentName: data.studentName,
+        studentEmail: data.studentEmail,
+        contactNumber: data.contactNumber,
+        status: data.status,
+        createUser: data.createUser
+      };
+
+      if (initialData) {
+        await axios.put('/api/booking', {
+          ...payload,
+          id: initialData.id,
+        });
+      } else {
+        await axios.post('/api/booking', payload);
+      }
       reset();
       mutate();
       onClose();
     } catch (error) {
-      console.error('Failed to add booking:', error);
-      alert('Failed to add booking: ' + (error.response?.data?.message || error.message));
+      console.error('Failed to save booking:', error);
+      alert('Failed to save booking: ' + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add New Booking">
+    <Modal isOpen={isOpen} onClose={onClose} title={initialData ? "Edit Booking" : "Add New Booking"}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-cyan-300 mb-1">Select Batch</label>
@@ -105,6 +142,16 @@ export default function AddBooking({ isOpen, onClose, mutate }) {
             <option value="confirmed" className="bg-cyan-950">Confirmed</option>
             <option value="cancelled" className="bg-cyan-950">Cancelled</option>
           </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            {...register('createUser')}
+            id="createUser"
+            className="w-4 h-4 bg-cyan-900/50 border-cyan-700/50 rounded"
+          />
+          <label htmlFor="createUser" className="text-sm font-medium text-cyan-300">Create user account (without password)</label>
         </div>
 
         <div className="flex gap-3 mt-6">

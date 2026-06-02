@@ -38,3 +38,41 @@ export const POST = async (req) => {
     return new Response(JSON.stringify({message: error.message}), {status: 500});
   }
 };
+
+export const PUT = async (req) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'staff')) {
+      return new Response(JSON.stringify({message: 'Unauthorized'}), {status: 401});
+    }
+
+    const body = await req.json();
+    const {id, ...updateData} = body;
+    if (updateData.expenseDate) updateData.expenseDate = new Date(updateData.expenseDate);
+
+    const result = await db.update(expenses)
+      .set(updateData)
+      .where(eq(expenses.id, Number(id)))
+      .returning();
+
+    return new Response(JSON.stringify({data: result[0]}), {status: 200});
+  } catch (error) {
+    return new Response(JSON.stringify({message: error.message}), {status: 500});
+  }
+};
+
+export const DELETE = async (req) => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'staff')) {
+      return new Response(JSON.stringify({message: 'Unauthorized'}), {status: 401});
+    }
+
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
+    await db.delete(expenses).where(eq(expenses.id, Number(id)));
+    return new Response(JSON.stringify({message: 'Deleted'}), {status: 200});
+  } catch (error) {
+    return new Response(JSON.stringify({message: error.message}), {status: 500});
+  }
+};

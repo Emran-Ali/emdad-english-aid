@@ -1,7 +1,7 @@
 import {validateBatchPayload} from '@/@emran/service/validation/batch/batchValidation';
-import {batches} from '@/db/schema/schema';
+import {batches, enrollments, payments} from '@/db/schema/schema';
 import {db} from '@emran/lib/db';
-import {count, eq} from 'drizzle-orm';
+import {count, eq, sql} from 'drizzle-orm';
 
 // Generate batchCode based on type and year, ensure uniqueness with timestamp suffix
 const generateBatchCode = (type, year) => {
@@ -79,7 +79,7 @@ export const GET = async (req) => {
       const batchResult = await db
         .select()
         .from(batches)
-        .where(batches.id.eq(id))
+        .where(eq(batches.id, id))
         .limit(1)
         .execute();
 
@@ -90,10 +90,35 @@ export const GET = async (req) => {
         });
       }
 
+      // Fetch analytics
+      const enrollmentStats = await db
+        .select({
+          count: count(),
+        })
+        .from(enrollments)
+        .where(eq(enrollments.batchId, id))
+        .execute();
+
+      const paymentStats = await db
+        .select({
+          totalPaid: sql`sum(cast(${enrollments.paidAmount} as decimal))`,
+          totalExpected: sql`sum(cast(${enrollments.totalAmount} as decimal))`,
+        })
+        .from(enrollments)
+        .where(eq(enrollments.batchId, id))
+        .execute();
+
       return new Response(
         JSON.stringify({
           message: 'Batch fetched successfully',
-          data: batchResult[0],
+          data: {
+            ...batchResult[0],
+            analytics: {
+              totalStudents: Number(enrollmentStats[0]?.count || 0),
+              totalPaid: Number(paymentStats[0]?.totalPaid || 0),
+              totalExpected: Number(paymentStats[0]?.totalExpected || 0),
+            }
+          },
         }),
         {status: 200, headers: {'Content-Type': 'application/json'}},
       );

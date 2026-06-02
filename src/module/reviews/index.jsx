@@ -4,11 +4,12 @@ import { processCellLimitedString } from '@emran/Components/ReactTable/tableHelp
 import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo, useState } from 'react';
 import axios from 'axios';
-import { FaCheck, FaTimes, FaStar, FaPlus } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaStar, FaPlus, FaEdit } from 'react-icons/fa';
 import AddReview from './AddReview';
 
 export default function ReviewsModule() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingReview, setEditingReview] = useState(null);
   const {
     onFetchData,
     data: ReviewsData,
@@ -63,13 +64,25 @@ export default function ReviewsModule() {
         cell: (props) => {
           const { id, isShown } = props.row.original;
           return (
-            <button
-              onClick={() => handleToggleShow(id, isShown)}
-              className={`p-2 rounded-lg transition-colors ${isShown ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-green-500/20 text-green-500 hover:bg-green-500/30'}`}
-              title={isShown ? 'Hide from Landing' : 'Show on Landing'}
-            >
-              {isShown ? <FaTimes /> : <FaCheck />}
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleToggleShow(id, isShown)}
+                className={`p-2 rounded-lg transition-colors ${isShown ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-green-500/20 text-green-500 hover:bg-green-500/30'}`}
+                title={isShown ? 'Hide from Landing' : 'Show on Landing'}
+              >
+                {isShown ? <FaTimes /> : <FaCheck />}
+              </button>
+              <button
+                onClick={() => {
+                  setEditingReview(props.row.original);
+                  setIsAddModalOpen(true);
+                }}
+                className="p-2 rounded-lg bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30 transition-colors"
+                title="Edit Review"
+              >
+                <FaEdit />
+              </button>
+            </div>
           );
         },
       },
@@ -82,7 +95,10 @@ export default function ReviewsModule() {
       <div className='flex justify-between items-center text-white mb-6'>
         <div className='text-3xl font-bold'>Student Reviews</div>
         <button
-          onClick={() => setIsAddModalOpen(true)}
+          onClick={() => {
+            setEditingReview(null);
+            setIsAddModalOpen(true);
+          }}
           className='flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-900/20'
         >
           <FaPlus /> Add New Review
@@ -90,8 +106,12 @@ export default function ReviewsModule() {
       </div>
       <AddReview
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setEditingReview(null);
+        }}
         mutate={mutate}
+        initialData={editingReview}
       />
         <DataTable
           columns={columns}

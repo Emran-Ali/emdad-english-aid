@@ -48,16 +48,16 @@ export const POST = async (req) => {
 export const PUT = async (req) => {
   try {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.role !== 'admin' && session.user.role !== 'staff')) {
       return new Response(JSON.stringify({message: 'Unauthorized'}), {status: 401});
     }
 
     const body = await req.json();
-    const {id, isShown} = body;
+    const {id, ...updateData} = body;
 
     const result = await db.update(reviews)
-      .set({isShown})
-      .where(eq(reviews.id, id))
+      .set(updateData)
+      .where(eq(reviews.id, Number(id)))
       .returning();
 
     return new Response(JSON.stringify({data: result[0]}), {status: 200});

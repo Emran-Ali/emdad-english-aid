@@ -4,10 +4,11 @@ import useDataTableFetchData from '@emran/hooks/useFetchTableData';
 import { useMemo, useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
-import { FaPlus, FaMoneyBillWave } from 'react-icons/fa';
+import { FaPlus, FaMoneyBillWave, FaEdit } from 'react-icons/fa';
 
 export default function CostModule() {
   const [modal, setModal] = useState(false);
+  const [editingCost, setEditingCost] = useState(null);
   const [batches, setBatches] = useState([]);
   const [formData, setFormData] = useState({
     expenseType: 'other',
@@ -33,12 +34,18 @@ export default function CostModule() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/cost', {
+      const payload = {
         ...formData,
         amount: Number(formData.amount),
         batchId: formData.batchId ? Number(formData.batchId) : null
-      });
+      };
+      if (editingCost) {
+        await axios.put('/api/cost', { ...payload, id: editingCost.id });
+      } else {
+        await axios.post('/api/cost', payload);
+      }
       setModal(false);
+      setEditingCost(null);
       mutate();
       setFormData({
         expenseType: 'other',
@@ -48,7 +55,7 @@ export default function CostModule() {
         batchId: '',
       });
     } catch (err) {
-      console.error('Failed to add cost', err);
+      console.error('Failed to save cost', err);
     }
   };
 
@@ -74,6 +81,29 @@ export default function CostModule() {
         header: 'Amount',
         cell: (props) => <span className="font-bold text-green-400">{props.row.original.amount} BDT</span>,
       },
+      {
+        id: 'actions',
+        header: 'Actions',
+        cell: (props) => (
+          <button
+            onClick={() => {
+              const data = props.row.original;
+              setEditingCost(data);
+              setFormData({
+                expenseType: data.expenseType,
+                description: data.description,
+                amount: data.amount,
+                expenseDate: new Date(data.expenseDate).toISOString().split('T')[0],
+                batchId: data.batchId?.toString() || '',
+              });
+              setModal(true);
+            }}
+            className="p-2 bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20 rounded-lg transition-colors"
+          >
+            <FaEdit />
+          </button>
+        ),
+      },
     ],
     [],
   );
@@ -83,7 +113,17 @@ export default function CostModule() {
       <div className='flex justify-between text-white mb-6'>
         <div className='text-3xl font-bold'>Batch Costs & Expenses</div>
         <button
-          onClick={() => setModal(true)}
+          onClick={() => {
+            setEditingCost(null);
+            setFormData({
+              expenseType: 'other',
+              description: '',
+              amount: '',
+              expenseDate: new Date().toISOString().split('T')[0],
+              batchId: '',
+            });
+            setModal(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-cyan-700 hover:bg-cyan-800 rounded-xl font-bold transition-all shadow-lg"
         >
           <FaPlus /> Add New Cost
@@ -105,7 +145,7 @@ export default function CostModule() {
           enableRowNumbers={true}
         />
 
-      <Modal isOpen={modal} onClose={() => setModal(false)} title="Add New Expense">
+      <Modal isOpen={modal} onClose={() => { setModal(false); setEditingCost(null); }} title={editingCost ? "Edit Expense" : "Add New Expense"}>
         <form onSubmit={handleSubmit} className="space-y-4 p-2">
           <div>
             <label className="block text-sm font-medium mb-1 text-cyan-300">Expense Type</label>
