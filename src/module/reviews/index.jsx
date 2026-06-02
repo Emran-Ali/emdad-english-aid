@@ -17,7 +17,7 @@ export default function ReviewsModule() {
     pageCount,
     totalCount,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/reviews' });
+  } = useDataTableFetchData({ urlPath: '/api/reviews' });
 
   const handleToggleShow = async (id, currentStatus) => {
     try {

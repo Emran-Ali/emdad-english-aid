@@ -18,7 +18,7 @@ export default function BookingModule() {
     pageCount,
     totalCount,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/booking' });
+  } = useDataTableFetchData({ urlPath: '/api/booking' });
 
   const handleUpdateStatus = async (id, status) => {
     try {

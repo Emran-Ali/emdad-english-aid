@@ -27,7 +27,7 @@ export default function BatchStudentModule({ batchId }) {
     data: enrollmentData,
     loading,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/student-management', params: { batchId } });
+  } = useDataTableFetchData({ urlPath: '/api/student-management', filters: [{ column: 'batchId', value: batchId }] });
 
   useEffect(() => {
     if (batchId) {

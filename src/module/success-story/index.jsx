@@ -27,7 +27,7 @@ export default function SuccessStoryModule() {
     pageCount,
     totalCount,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/success-story' });
+  } = useDataTableFetchData({ urlPath: '/api/success-story' });
 
   useMemo(() => {
     const fetchStudents = async () => {

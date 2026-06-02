@@ -32,7 +32,7 @@ export default function TeamManagementModule() {
     pageCount,
     totalCount,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/team' });
+  } = useDataTableFetchData({ urlPath: '/api/team' });
 
   useMemo(() => {
     const fetchUsers = async () => {

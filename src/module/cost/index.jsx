@@ -25,7 +25,7 @@ export default function CostModule() {
     pageCount,
     totalCount,
     mutate,
-  } = useDataTableFetchData({ urlPath: 'api/cost' });
+  } = useDataTableFetchData({ urlPath: '/api/cost' });
 
   useEffect(() => {
     axios.get('/api/batch/dropdown').then(res => setBatches(res.data.data));
