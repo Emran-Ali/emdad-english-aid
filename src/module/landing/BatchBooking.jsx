@@ -20,6 +20,7 @@ const BatchBooking = () => {
       try {
         const response = await axios.get('/api/batch');
         // Filter batches that are accepting students
+        console.log('batch data',response.data)
         const acceptingBatches = response.data.data.filter(b => b.isAcceptingStudents);
         setBatches(acceptingBatches);
       } catch (error) {

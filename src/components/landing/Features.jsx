@@ -131,37 +131,37 @@ const Features = () => {
     <section
       ref={container}
       className='relative container  mx-auto overflow-hidden'>
-      <div className='w-full  px-4 mt-12 mb-12'>
+      <div className='w-full  px-4 my-4 md:my-12'>
         <div className='text-center mx-auto'>
           <h2 className='font-heading text-3xl sm:text-5xl lg:text-7xl text-cyan-500 tracking-tighter-xl'>
             Features
           </h2>
         </div>
       </div>
-      <div className='relative w-full h-[70vh] flex items-center justify-center px-4'>
+      <div className='relative w-full h-[85vh] md:h-[70vh] flex items-center justify-center px-4'>
         <div className='relative w-full h-full'>
           {features.map((feature, index) => (
             <div
               key={index}
               ref={(el) => (cardsRef.current[index] = el)}
               className='feature-card absolute inset-0 w-full h-full py-8 md:py-20 px-4 sm:px-16 bg-gradient-radial-dark border border-gray-900 border-opacity-30 rounded-3xl overflow-hidden flex items-center'>
-              <div className='relative z-10 flex flex-wrap items-center w-full h-full'>
-                <div className='feature-image relative w-full md:w-1/2 h-full'>
+              <div className='relative z-10 flex flex-col md:flex-row items-center w-full h-full'>
+                <div className='feature-image relative w-full md:w-1/2 h-1/2 md:h-full'>
                   <Image
                     className='w-full h-full rounded-3xl object-cover'
                     src={feature.image}
                     alt={feature.title}
                     fill
-                    sizes='(max-width: 1440px) 100vw, 50vw'
+                    sizes='(max-width: 768px) 100vw, 50vw'
                     priority={index === 0}
                   />
                 </div>
-                <div className='feature-content w-full md:w-1/2 flex items-center p-8'>
-                  <div className='max-w-xl mx-auto md:mx-0'>
-                    <h2 className='mb-6 text-3xl sm:text-6xl text-white tracking-tighter-xl font-bold'>
+                <div className='feature-content w-full md:w-1/2 h-1/2 md:h-full flex items-center p-4 md:p-8'>
+                  <div className='max-w-xl mx-auto md:mx-0 text-center md:text-left'>
+                    <h2 className='mb-2 md:mb-6 text-xl sm:text-4xl md:text-6xl text-white tracking-tighter-xl font-bold'>
                       {feature.title}
                     </h2>
-                    <p className='px-2 md:px-0 text-white text-opacity-70 text-lg sm:text-xl leading-relaxed'>
+                    <p className='px-2 md:px-0 text-white text-opacity-70 text-sm sm:text-lg md:text-xl leading-relaxed'>
                       {feature.description}
                     </p>
                   </div>

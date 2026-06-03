@@ -31,7 +31,7 @@ const ProfileCard = ({profile}) => {
       <div className="card px-6 py-8 border border-gray-800 rounded-xl bg-gradient-radial-dark shadow-lg">
         <Image
           alt={profile.name}
-          src={profile.image.startsWith('/') ? profile.image : `/${profile.image}`}
+          src={profile.image?.startsWith('/') ? profile.image : `/${profile.image}`}
           className="shadow-lg rounded-full mx-auto h-52 w-52 object-cover"
           width={208}
           height={208}
@@ -52,7 +52,7 @@ const ProfileCard = ({profile}) => {
                 const Icon = socialIcons[platform];
                 const bgColor = socialColors[platform];
 
-                return Icon ? (
+                return Icon && link ? (
                   <a
                     key={index}
                     href={link}

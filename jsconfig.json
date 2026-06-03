@@ -8,6 +8,7 @@
       "@auth/*": ["./src/@emran/lib/auth/*"],
       "@service/*": ["./src/@emran/service/*"],
       "@db/*": ["./src/@emran/db/*"]
-    }
+    },
+    "jsx": "react"
   }
 }
